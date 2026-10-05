@@ -21,7 +21,7 @@
     "Caller assumes different retained runs of the same job and quote branch; inputs do not attest this.",
     "Only exact qualified reference, Tag presence/value, raw interval and nonempty RoutineCode establish correspondence.",
     "Unresolved worksheets are not inferred additions/removals, replacements, splits or merges.",
-    "Opaque text and receivers describe recorded representations, not underlying object equality.",
+    "Opaque values and receivers describe recorded text, not underlying object equality.",
     "Category counts overlap; changed_identifiers counts each changed identity once within established pairs."
   ],
   "outcome": "incomplete",
@@ -35,7 +35,6 @@
     "established_pairs": 0,
     "identifier_categories": {
       "added": 0,
-      "opaque_text": 0,
       "receiver": 0,
       "removed": 0,
       "type": 0,
@@ -53,19 +52,6 @@
       "side": "baseline",
       "unavailable_identity_fields": [],
       "worksheet": {
-        "identifiers": [
-          {
-            "identifier": {
-              "kind": "variable",
-              "name": "finalAmount"
-            },
-            "value": {
-              "kind": "number",
-              "type": "java.math.BigDecimal",
-              "value": "20"
-            }
-          }
-        ],
         "index": 0,
         "metadata": {
           "Description": "Base Premium",
@@ -89,19 +75,6 @@
       "side": "baseline",
       "unavailable_identity_fields": [],
       "worksheet": {
-        "identifiers": [
-          {
-            "identifier": {
-              "kind": "variable",
-              "name": "finalAmount"
-            },
-            "value": {
-              "kind": "number",
-              "type": "java.math.BigDecimal",
-              "value": "20"
-            }
-          }
-        ],
         "index": 1,
         "metadata": {
           "Description": "Base Premium",
@@ -125,19 +98,6 @@
       "side": "candidate",
       "unavailable_identity_fields": [],
       "worksheet": {
-        "identifiers": [
-          {
-            "identifier": {
-              "kind": "variable",
-              "name": "finalAmount"
-            },
-            "value": {
-              "kind": "number",
-              "type": "java.math.BigDecimal",
-              "value": "20"
-            }
-          }
-        ],
         "index": 0,
         "metadata": {
           "Description": "Base Premium",
@@ -161,19 +121,6 @@
       "side": "candidate",
       "unavailable_identity_fields": [],
       "worksheet": {
-        "identifiers": [
-          {
-            "identifier": {
-              "kind": "variable",
-              "name": "finalAmount"
-            },
-            "value": {
-              "kind": "number",
-              "type": "java.math.BigDecimal",
-              "value": "20"
-            }
-          }
-        ],
         "index": 1,
         "metadata": {
           "Description": "Base Premium",
@@ -190,5 +137,5 @@
       }
     }
   ],
-  "version": 1
+  "version": 2
 }

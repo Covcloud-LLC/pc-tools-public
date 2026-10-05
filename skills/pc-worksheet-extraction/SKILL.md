@@ -5,38 +5,30 @@ description: Fetch the complete retained rating worksheets XML for a PC job numb
 
 # Fetch worksheets by job number
 
-Use the bundled `scripts/worksheet-extract.py`; resolve this path relative to this
-skill directory even when installed elsewhere. [README.md](README.md) describes
-setup, connection options, output semantics and failures.
+[README.md](README.md) holds setup, connection options, output and failure
+remedies.
 
-Obtain the exact job number (preserving leading zeros), authorized SQL Server
-connection configuration and destination. Reuse connection details already supplied
-in the session. If the user only gives a job number, use the existing configured
-target and save `worksheets-<job-number>.xml` in the working directory (use a safe
-filename if the job number contains path characters). Ask for missing connection
-information only when it is unavailable; never guess another database.
+1. Get the exact job number (keep leading zeros), the connection and the
+   destination. Reuse connection details already given in the session. With only
+   a job number, use the configured connection and save `worksheets-<job>.xml` in
+   the working directory. Pass the job number unchanged to `--job-number`, but if
+   it contains `/`, `\`, `..` or other path characters, replace them in the
+   filename so the file stays in the working directory. Never guess another
+   database.
+2. Run the script from this skill's directory, wherever it is installed, with a
+   Python that has `requirements.txt` installed:
 
-Use an available Python environment with the bundled `requirements.txt` installed.
-For a checkout's literal JDBC configuration:
+   ```bash
+   python /path/to/pc-worksheet-extraction/scripts/worksheet-extract.py \
+     --job-number '<job>' \
+     --pc-database-config /path/to/checkout/modules/configuration/config/database-config.xml \
+     --output <worksheets.xml>
+   ```
 
-```bash
-python /path/to/pc-worksheet-extraction/scripts/worksheet-extract.py \
-  --job-number '0000123456' \
-  --pc-database-config /path/to/pc-checkout/modules/configuration/config/database-config.xml \
-  --output /chosen/local/worksheets-0000123456.xml
-```
-
-The alternative is `PC_WS_*` environment variables as documented in the guide.
-Do not display credentials, the raw JDBC URL or full worksheet contents. Run the
-script with the user's values, inspect its exit code and JSON result, and report
-success only for exit 0 with `status: ok`. Return the clickable absolute output
-path, source server/database, job number and worksheet count. The script validates
-XML and fidelity; do not rewrite, normalize or redact its output. Relay any
-`warnings` so the user can delete a residual temporary copy of the XML.
-
-Report a nonzero result by its error category and the relevant remedy in the guide.
-If the output already exists, choose a new destination unless replacement was
-requested. Multiple retained blobs are an explicit unsupported ambiguity: do not
-select a version with ad hoc SQL. Do not rerate, generate worksheets, modify database
-records or fabricate an example to get past missing data. Repository fixtures must
-be synthetic or non-sensitive; ordinary local output stays faithful and local.
+   Leave out `--pc-database-config` to use the `PC_WS_*` environment variables.
+   Add `--overwrite` only when the user asks to replace the destination. Do not
+   print credentials or the XML.
+3. Success is exit 0 with `status: ok`: return the saved path, source
+   server/database, job number, worksheet count and any `warnings`. Otherwise
+   report the error category and the README's remedy. Do not pick between
+   several retained blobs, rerate, or change database records.

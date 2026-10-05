@@ -126,9 +126,9 @@ def comparison_expected(product, side):
 
 
 if __name__ == '__main__':
-    root = Path(__file__).resolve().parents[2] / 'examples/worksheets/normalized'
+    here = Path(__file__).resolve().parent
     for name in ['cp', 'pa', 'homeowners']:
-        (root / (name + '-synthetic.expected.json')).write_text(json.dumps(expected(name), sort_keys=True, indent=2) + '\n')
-        for side in ['before', 'after']:
-            (root / 'comparison' / (name + '-' + side + '.expected.json')).write_text(
+        (here / 'fixtures' / (name + '-synthetic.expected.json')).write_text(json.dumps(expected(name), sort_keys=True, indent=2) + '\n')
+        for side, role in [('before', 'baseline'), ('after', 'candidate')]:
+            (here.parents[1] / 'examples/synthetic/worksheets' / name / (role + '.json')).write_text(
                 json.dumps(comparison_expected(name, side), sort_keys=True, indent=2) + '\n')

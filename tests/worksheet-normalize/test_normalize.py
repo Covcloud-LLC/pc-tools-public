@@ -15,7 +15,8 @@ from expected_fixtures import expected, comparison_expected
 ROOT = Path(__file__).resolve().parents[2]
 BUNDLE = ROOT / 'skills/pc-worksheet-normalization'
 SCRIPT = BUNDLE / 'scripts/worksheet-normalize.py'
-FIXTURES = ROOT / 'examples/worksheets/normalized'
+FIXTURES = Path(__file__).parent / 'fixtures'
+SYNTHETIC = ROOT / 'examples/synthetic/worksheets'
 spec = importlib.util.spec_from_file_location('normalizer', SCRIPT)
 mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)
@@ -83,10 +84,10 @@ class NormalizeTests(unittest.TestCase):
         pairs = {}
         for product in ['cp', 'pa', 'homeowners']:
             pairs[product] = []
-            for side in ['before', 'after']:
-                stem = FIXTURES / 'comparison' / (product + '-' + side)
+            for side, role in [('before', 'baseline'), ('after', 'candidate')]:
+                stem = SYNTHETIC / product / role
                 actual = mod.normalize(mod.read_xml(stem.with_suffix('.xml')))
-                saved = json.loads(stem.with_suffix('.expected.json').read_text())
+                saved = json.loads(stem.with_suffix('.json').read_text())
                 self.assertEqual(actual, comparison_expected(product, side))
                 self.assertEqual(actual, saved)
                 pairs[product].append(actual['worksheets'])
