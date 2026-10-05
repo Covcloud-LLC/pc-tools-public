@@ -31,7 +31,8 @@ Do not display credentials, the raw JDBC URL or full worksheet contents. Run the
 script with the user's values, inspect its exit code and JSON result, and report
 success only for exit 0 with `status: ok`. Return the clickable absolute output
 path, source server/database, job number and worksheet count. The script validates
-XML and fidelity; do not rewrite, normalize or redact its output.
+XML and fidelity; do not rewrite, normalize or redact its output. Relay any
+`warnings` so the user can delete a residual temporary copy of the XML.
 
 Report a nonzero result by its error category and the relevant remedy in the guide.
 If the output already exists, choose a new destination unless replacement was

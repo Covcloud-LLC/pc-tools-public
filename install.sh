@@ -4,7 +4,7 @@
 #
 #   ./install.sh                  # into ~/.claude/skills (or $CLAUDE_HOME/skills)
 #   ./install.sh --into <repo>    # into <repo>/.claude/skills
-#   ./install.sh --force          # replace existing files/links (backed up to <path>.bak)
+#   ./install.sh --force          # replace existing files/links (backed up to <path>.bak.<timestamp>)
 #   ./install.sh --uninstall      # remove links that point here; leave anything else alone
 
 set -euo pipefail
@@ -37,8 +37,11 @@ link() {
   fi
   if [ -e "$dst" ] || [ -L "$dst" ]; then
     if [ "$FORCE" -eq 1 ]; then
-      rm -rf "$dst.bak"; mv "$dst" "$dst.bak"
-      echo "  backed up $dst -> $(basename "$dst").bak"
+      local base="$dst.bak.$(date +%Y%m%d%H%M%S)" n=1
+      local backup="$base"
+      while [ -e "$backup" ] || [ -L "$backup" ]; do backup="$base.$n"; n=$((n + 1)); done
+      mv "$dst" "$backup"
+      echo "  backed up $dst -> $(basename "$backup")"
     else
       echo "  SKIP     $dst already exists (re-run with --force)" >&2; return
     fi

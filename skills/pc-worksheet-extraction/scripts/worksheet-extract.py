@@ -138,7 +138,7 @@ def decode(rows, requested_job):
                      stored_gzip_bytes=len(packed), stored_gzip_sha256=hashlib.sha256(packed).hexdigest())
 
 
-def write_output(path, xml, overwrite=False):
+def write_output(path, xml, overwrite=False, warnings=None):
     temporary = None
     try:
         # Do not follow an existing destination symlink. Replacement replaces the
@@ -160,8 +160,12 @@ def write_output(path, xml, overwrite=False):
         if temporary is not None:
             try:
                 os.unlink(temporary)
-            except OSError:
-                pass
+            except FileNotFoundError:
+                pass  # A successful replace already removed the temporary name.
+            except OSError as exc:
+                # Report a residual copy of the XML without turning publication into a failure.
+                if warnings is not None:
+                    warnings.append('Could not remove temporary file {}: {}'.format(temporary, exc.strerror))
 
 
 def positive(value):
@@ -185,7 +189,10 @@ def main(argv=None):
         config = configuration(args, os.environ)
         rows = fetch(config, args.timeout)(args.job_number)
         xml, result = decode(rows, args.job_number)
-        result['output'] = write_output(args.output, xml, args.overwrite)
+        warnings = []
+        result['output'] = write_output(args.output, xml, args.overwrite, warnings)
+        if warnings:
+            result['warnings'] = warnings
         result['source_server'] = config['server']
         result['source_port'] = config['port']
         print(json.dumps(dict(status='ok', **result), sort_keys=True))

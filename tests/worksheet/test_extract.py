@@ -86,6 +86,16 @@ class ExtractTests(unittest.TestCase):
             if os.name == 'posix':
                 self.assertEqual(target.stat().st_mode & 0o777, 0o600)
 
+    def test_cleanup_failure_after_publication_is_reported(self):
+        with tempfile.TemporaryDirectory() as d:
+            target, warnings = Path(d) / 'result.xml', []
+            with patch.object(ws.os, 'unlink', side_effect=PermissionError(13, 'Permission denied')):
+                self.assertEqual(ws.write_output(target, XML, warnings=warnings), str(target))
+            self.assertEqual(target.read_bytes(), XML)
+            residual = [p for p in Path(d).iterdir() if p != target]
+            self.assertEqual(len(residual), 1)
+            self.assertEqual(warnings, ['Could not remove temporary file {}: Permission denied'.format(residual[0])])
+
     def test_output_missing_parent_directory_and_write_failure(self):
         with tempfile.TemporaryDirectory() as d:
             self.fails(6, ws.write_output, Path(d) / 'missing' / 'x.xml', XML)

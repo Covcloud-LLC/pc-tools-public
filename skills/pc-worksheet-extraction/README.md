@@ -80,7 +80,9 @@ exclusive publication, hard links. `--help` lists the flags.
 On success, exit 0 and one JSON object on stdout report `status: ok`, absolute
 `output`, `source_server`, `source_port`, `source_database`, `job_number`, the
 period/container/data IDs, worksheet count, XML size/SHA-256, and stored GZIP
-size/SHA-256. No worksheet text appears on stdout. On failure, a JSON error goes to
+size/SHA-256. If the temporary file cannot be removed after publication, `warnings`
+names it; the saved XML is complete, and the residual file holds the same worksheet
+data, so delete it. No worksheet text appears on stdout. On failure, a JSON error goes to
 stderr, no success is printed, and no new destination is published. Argument-parser
 usage errors use standard argparse text and exit 2.
 

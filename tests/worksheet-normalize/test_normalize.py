@@ -269,6 +269,8 @@ class NormalizeTests(unittest.TestCase):
                  xml('<Store Variable="x">unmodeled text</Store>'),
                  xml('<ConditionalGroup><Else Result="true"/><EndIf/></ConditionalGroup>'),
                  xml('<ConditionalGroup><If Result="false"><Condition/>'+store('3')+'</If><EndIf/></ConditionalGroup>'),
+                 xml('<ConditionalGroup><If Result="true"><Condition/>'+store('3')+'</If><Else Result="true">'+store('4')+'</Else><EndIf/></ConditionalGroup>'),
+                 xml('<ConditionalGroup><If Result="false"><Condition/></If><Else Result="false"/><EndIf/></ConditionalGroup>'),
                  '<Worksheets/>', '<Worksheet/>', '<Worksheets><Worksheet><Routine/><Routine/></Worksheet></Worksheets>',
                  '<!DOCTYPE Worksheets [<!ENTITY data "1">]>' + xml(store('&data;'))]
         self.output.write_text('keep me')
