@@ -1,27 +1,24 @@
 # Fetch retained PC worksheets
 
-Use this prompt with an assistant that can run local Python scripts. Replace the
-bracketed inputs; the bundle may be installed anywhere. No skill installation is
-required.
+Fetch the retained rating worksheets for one job into a local XML file:
 
-> Fetch the retained rating worksheets for PC job `[JOB_NUMBER]` into
-> `[ABSOLUTE_OUTPUT_XML_PATH]`. Use the extraction bundle at `[BUNDLE_DIRECTORY]`
-> and the authorized connection `[DATABASE_CONFIG_XML_PATH or existing
-> PC_WS_* environment variables]`. Reuse the Python environment `[PYTHON_PATH]`.
->
-> Read the bundle's README.md for setup and supported connection forms. Run its
-> scripts/worksheet-extract.py with --job-number and --output, plus
-> --pc-database-config when supplied. Preserve leading zeros in the job number.
-> This script retrieves the complete saved XML for the most recent retained run;
-> it does not generate worksheets or choose historical runs. Keep database access
-> read-only. Do not print credentials or full worksheet contents.
->
-> Inspect the exit code and JSON result. On exit 0 and status ok, return the
-> absolute clickable file path, source server/database, job number and worksheet
-> count, plus any warnings about a residual temporary file. Preserve the file
-> exactly as written. On failure, report the error
-> category and the guide's remedy. Do not guess between multiple retained blobs,
-> change PC data, or fabricate missing worksheets. Choose a new output
-> path if one already exists unless I requested replacement. Keep ordinary local
-> XML out of repository fixtures; only synthetic or non-sensitive examples belong
-> there.
+- Job number: `<job number>` (keep leading zeros)
+- Destination: `<output XML path>`
+- Bundle: `<pc-worksheet-extraction directory>`
+- Connection: `<database-config.xml path>`, or the `PC_WS_*` environment variables
+- Python with the bundle's `requirements.txt` installed: `<python path>`
+
+Read the bundle's README.md, then run:
+
+```bash
+<python> <bundle>/scripts/worksheet-extract.py --job-number '<job number>' \
+  --pc-database-config <database-config.xml> --output <output XML path>
+```
+
+Leave out `--pc-database-config` when using the environment variables. Add
+`--overwrite` only if I ask to replace the destination. Do not print credentials
+or the XML, and do not change database records.
+
+Only exit 0 with `status: ok` is success: tell me the saved path, source
+server/database, job number, worksheet count and any `warnings`. On failure, tell
+me the error category and the README's remedy.

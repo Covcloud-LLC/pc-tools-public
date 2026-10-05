@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 BUNDLE = ROOT / 'skills/pc-worksheet-comparison'
 SCRIPT = BUNDLE / 'scripts/worksheet-compare.py'
 FIXTURES = Path(__file__).parent / 'fixtures'
-PAIRS = ROOT / 'examples/worksheets/normalized/comparison'
+SYNTHETIC = ROOT / 'examples/synthetic/worksheets'
 spec = importlib.util.spec_from_file_location('comparator', SCRIPT)
 mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)
@@ -43,7 +43,7 @@ EXPECTED = {
     'E06': ('different', 1, 0, 0, 1, 0, {'value': 1, 'type': 1}),
     'E07': ('different', 1, 0, 0, 1, 0, {'value': 1, 'type': 1}),
     'E08': ('different', 1, 0, 0, 1, 0, {'removed': 1}),
-    'E09': ('different', 1, 0, 0, 1, 0, {'value': 1, 'opaque_text': 1}),
+    'E09': ('different', 1, 0, 0, 1, 0, {'value': 1}),
     'E10': ('different', 1, 0, 0, 1, 0, {'receiver': 1}),
     'E11': ('incomplete', 0, 1, 1, 0, 0, {}),
     'E12': ('incomplete', 0, 1, 2, 0, 0, {}),
@@ -91,6 +91,15 @@ class CompareTests(unittest.TestCase):
         self.assertEqual(len(actual['pairs']), pairs)
         self.assertEqual(len(actual['unresolved']), ua + ub)
         self.assertTrue(all(u['reasons'] for u in actual['unresolved']))
+        self.assertEqual((actual['format'], actual['version']), ('pc-worksheet-comparison', 2))
+        self.assertEqual(set(s['identifier_categories']), {'added', 'removed', 'value', 'type', 'receiver'})
+        for pair in actual['pairs']:
+            changed = pair['outcome'] == 'different'
+            self.assertEqual(set(pair), {'baseline', 'candidate', 'outcome'} | ({'context_changes', 'identifier_changes'} if changed else set()))
+            for side in ('baseline', 'candidate'):
+                self.assertEqual(set(pair[side]), {'index', 'metadata', 'routine'})
+        for entry in actual['unresolved']:
+            self.assertEqual(set(entry['worksheet']), {'index', 'metadata', 'routine'})
 
     def test_e01_through_e28_cli_and_exact_evidence(self):
         for name, case in CASES.items():
@@ -108,19 +117,18 @@ class CompareTests(unittest.TestCase):
                 self.assert_result(actual, EXPECTED[name])
                 self.assertEqual(before, (self.a.read_bytes(), self.b.read_bytes()))
                 for pair in actual['pairs']:
-                    for side in ('baseline', 'candidate'):
-                        source = case[side]['worksheets'][pair[side]['index']]
+                    sources = {side: case[side]['worksheets'][pair[side]['index']] for side in ('baseline', 'candidate')}
+                    for side, source in sources.items():
                         self.assertEqual(pair[side]['metadata'], source['metadata'])
                         self.assertEqual(pair[side]['routine'], source['routine'])
-                        self.assertCountEqual(pair[side]['identifiers'], source['identifiers'])
-                    for change in pair['identifier_changes']:
-                        for side in ('baseline', 'candidate'):
-                            record = next((r for r in pair[side]['identifiers'] if r['identifier'] == change['identifier']), None)
-                            self.assertEqual(change[side], record)
+                    for change in pair.get('identifier_changes', []):
+                        for side, source in sources.items():
+                            record = next((r for r in source['identifiers'] if r['identifier'] == change['identifier']), None)
+                            self.assertEqual(change[side], None if record is None else {k: v for k, v in record.items() if k != 'identifier'})
                 for entry in actual['unresolved']:
                     source = case[entry['side']]['worksheets'][entry['worksheet']['index']]
                     self.assertEqual(entry['worksheet']['metadata'], source['metadata'])
-                    self.assertCountEqual(entry['worksheet']['identifiers'], source['identifiers'])
+                    self.assertEqual(entry['worksheet']['routine'], source['routine'])
 
     def test_cp_pa_ho_oracles(self):
         for product, expected, mapping in [
@@ -128,7 +136,7 @@ class CompareTests(unittest.TestCase):
             ('pa', ('different', 2, 0, 0, 1, 0, {'value': 1}), [(0, 1), (1, 0)]),
             ('homeowners', ('incomplete', 0, 2, 2, 0, 0, {}), [])]:
             with self.subTest(product=product):
-                a, b = [json.loads((PAIRS / (product + '-' + side + '.expected.json')).read_text()) for side in ('before', 'after')]
+                a, b = [json.loads((SYNTHETIC / product / (side + '.json')).read_text()) for side in ('baseline', 'candidate')]
                 actual = result(a, b)
                 self.assert_result(actual, expected)
                 self.assertEqual([(p['baseline']['index'], p['candidate']['index']) for p in actual['pairs']], mapping)
@@ -141,10 +149,13 @@ class CompareTests(unittest.TestCase):
 
     def test_producer_outputs_and_worksheet_reordering(self):
         # Use producer-owned expected v2 artifacts without a runtime dependency.
-        for source in (ROOT / 'examples/worksheets/normalized').rglob('*.expected.json'):
-            document = json.loads(source.read_text())
-            mod.validate(document)
-        a = json.loads((PAIRS / 'pa-before.expected.json').read_text())
+        sources = (list(SYNTHETIC.glob('*/baseline.json')) + list(SYNTHETIC.glob('*/candidate.json'))
+                   + list((ROOT / 'tests/worksheet-normalize/fixtures').glob('*.expected.json')))
+        self.assertEqual(len(sources), 9)
+        # Real captures are validated where the checkout has them.
+        for source in sources + list((ROOT / 'examples/pc').glob('*/*/worksheets/*/worksheets.json')):
+            mod.validate(json.loads(source.read_text()))
+        a = json.loads((SYNTHETIC / 'pa/baseline.json').read_text())
         b = copy.deepcopy(a)
         b['worksheets'].reverse()
         actual = result(a, b)
@@ -236,7 +247,7 @@ class CompareTests(unittest.TestCase):
         rec['receiver']['value'] = ''
         rec['value'] = {'kind': 'opaque', 'type': 'entity.Cost', 'value': 'Cost:8', 'opaque': True}
         actual = result(a, b)
-        self.assert_result(actual, ('different', 1, 0, 0, 1, 0, {'value': 1, 'type': 1, 'opaque_text': 1, 'receiver': 1}))
+        self.assert_result(actual, ('different', 1, 0, 0, 1, 0, {'value': 1, 'type': 1, 'receiver': 1}))
         del rec['receiver']
         self.assertEqual(result(a, b)['summary']['identifier_categories']['receiver'], 1)
 

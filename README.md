@@ -7,24 +7,23 @@ scripts.
 
 ## Worksheet pipeline
 
-The four skills form one pipeline for comparing two rating runs of the same job
+The three skills form one pipeline for comparing two rating runs of the same job
 and quote branch:
 
 | Step | Skill | Input | Output |
 |---|---|---|---|
 | Extract | [`pc-worksheet-extraction`](skills/pc-worksheet-extraction/README.md) | Job number and a read-only SQL Server login | The retained worksheets XML, byte for byte |
 | Normalize | [`pc-worksheet-normalization`](skills/pc-worksheet-normalization/README.md) | Worksheets XML | Final-values v2 JSON |
-| Compare | [`pc-worksheet-comparison`](skills/pc-worksheet-comparison/README.md) | Two final-values v2 JSON files | Comparison v1 JSON |
-| Report | [`pc-worksheet-report`](skills/pc-worksheet-report/README.md) | Comparison v1 JSON | Local Markdown report |
+| Compare | [`pc-worksheet-comparison`](skills/pc-worksheet-comparison/README.md) | Two final-values v2 JSON files | Comparison v2 JSON and a Markdown report |
 
 The database keeps only the latest rating data for a job, so save each run's XML
 before rerating if you want to compare it later.
 
-Synthetic worked examples live in [`examples/worksheets/`](examples/worksheets/normalized/README.md).
+Synthetic worked examples live in [`examples/synthetic/worksheets/`](examples/synthetic/worksheets/README.md).
 
 ## Requirements
 
-- Python 3.8 or later. Normalize, compare and report use the standard library only.
+- Python 3.8 or later. Normalize and compare use the standard library only.
 - Extract also needs `pymssql`; see its [README](skills/pc-worksheet-extraction/README.md).
 - Node 24 or later to run the test suite.
 

@@ -6,6 +6,8 @@ supported target is the PC 10.2.3 SQL Server schema (SQL Server
 identifiers, dates, decimal precision and every worksheet. No normalization,
 redaction, rating generation or historical rating-run selection takes place.
 
+Example output format: the [synthetic worksheets XML](../../examples/synthetic/worksheets/README.md).
+
 ## Setup
 
 Use Python 3.8+ and `pymssql` 2.3 or later, below 3. The SQL Server driver is the
@@ -124,12 +126,5 @@ container structure, not business correctness of a rating calculation.
 
 ## Use with an assistant
 
-Load [SKILL.md](SKILL.md) through your assistant's skill support and ask “Fetch the
-worksheets for job 0000123456,” supplying the connection and destination if they
-are not already available. The repository's `install.sh` installs the bundle into
-Claude Code; a Codex installation can copy or symlink this entire directory into
-its skills directory. All script paths resolve within the bundle.
-
-Without skill support, copy [PROMPT.md](PROMPT.md), fill its inputs and send it to
-an assistant with local shell access. Both workflows execute the same script and
-return the saved path, source database, job number and count.
+Install [SKILL.md](SKILL.md) as a skill and ask, for example, "Fetch the worksheets
+for job 0000123456." Without skill support, fill in [PROMPT.md](PROMPT.md).

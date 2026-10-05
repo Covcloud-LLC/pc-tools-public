@@ -18,11 +18,12 @@ is written to a temporary file beside the destination, then published atomically
 A filesystem must support hard links for the default no-clobber publication.
 
 Exit 0 prints a JSON status with the absolute `output`, `worksheet_count` and
-`identifier_count`. A rare temporary-file cleanup failure after successful publication
-adds `warnings` naming the residual temporary file; the saved JSON is complete. Failures return exit 1 and JSON on stderr; invalid CLI flags
-return argparse's usage message and exit 2. The assistant workflow is in
-[SKILL.md](SKILL.md); [PROMPT.md](PROMPT.md) is usable without skill discovery.
-The entire directory can be installed elsewhere and run without this repository.
+`identifier_count`. If a temporary file cannot be removed after a successful
+save, `warnings` names it; the saved JSON is complete. Failures return exit 1 and
+JSON on stderr; invalid CLI flags return argparse's usage message and exit 2. The
+directory can be installed anywhere and run on its own.
+
+Examples: [synthetic cases](../../examples/synthetic/worksheets/README.md) (`baseline.xml` → `baseline.json`).
 
 ## Supported inputs
 
@@ -71,35 +72,21 @@ There are no event indexes, input hashes, file paths, run timestamps, or interim
 values in the output. Metadata and opaque identities are retained for downstream
 policy decisions; this tool does not match worksheets across files.
 
-### Comparison context and limits
+### What the output can and cannot identify
 
-Use normalized JSON as the downstream comparison input. A whole-document text
-diff is not a business comparison: worksheet order, source references, routine
-metadata, and final values have different meanings. Consumers must explicitly
-support version 2, including `metadata.Tag`; do not silently discard unknown
-context fields. Re-normalize original XML when a consumer requires this contract.
-Changing a saved JSON version number cannot recover missing context.
+`FixedId` names the source subject (often a cost, sometimes a vehicle or
+dwelling); the dates give its interval; `Tag` can tell apart two calculations on
+the same subject. Routine and book fields describe the calculation used, and
+their versions can change between runs. Description, array position, final
+amounts and opaque display text are not business keys. Absent and empty `Tag`
+differ. Attribute text follows normal XML decoding, with no trimming or case
+folding.
 
-All new output declares version 2, including worksheets without Tag. There is no
-legacy-output switch. Version-1-only consumers must update or continue using
-retained version 1 files. Version 1 does not support Worksheet.Tag; a consumer supporting
-both versions must validate their respective fields without discarding Tag or
-relabeling files. Missing Tag is not equivalent to a present empty Tag. Attribute
-text follows normal XML decoding; no trimming or case folding is applied.
-
-`FixedId` refers to the source subject (often a cost, sometimes a vehicle or
-dwelling). Dates identify its recorded interval; `Tag` may distinguish another
-calculation on that subject. Routine/book fields describe the calculation used,
-including versions that can legitimately change. Neither description, array
-position, final amount, nor an opaque display string is a guaranteed business key.
-
-The XML does not consistently supply structured building/vehicle/dwelling keys,
-coverage codes or links from a cost to its covered subject. Normalization cannot
-invent them or establish that changed source IDs refer to the same subject. It
-preserves every worksheet independently, including indistinguishable duplicates.
-Do not claim complete comparison readiness from conversion success. Any additional
-subject context must be captured upstream and included in normalized inputs under
-an agreed contract; comparison must not require the raw XML or database to fill it in.
+The XML does not consistently carry building, vehicle or dwelling keys, coverage
+codes or links from a cost to its subject. Normalization does not invent them,
+and a successful conversion does not mean every worksheet can be paired with
+another run. A whole-file text diff of two outputs is not a comparison; use the
+comparison bundle.
 
 Identity rules:
 
