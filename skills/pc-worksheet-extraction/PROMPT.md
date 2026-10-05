@@ -18,7 +18,8 @@ required.
 >
 > Inspect the exit code and JSON result. On exit 0 and status ok, return the
 > absolute clickable file path, source server/database, job number and worksheet
-> count. Preserve the file exactly as written. On failure, report the error
+> count, plus any warnings about a residual temporary file. Preserve the file
+> exactly as written. On failure, report the error
 > category and the guide's remedy. Do not guess between multiple retained blobs,
 > change PC data, or fabricate missing worksheets. Choose a new output
 > path if one already exists unless I requested replacement. Keep ordinary local

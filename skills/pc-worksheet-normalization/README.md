@@ -32,7 +32,8 @@ Auto and Homeowners worksheet shapes: `Worksheets`, `Worksheet`, `Routine`,
 `RateQuery`, `QueryParam`, `InstanceMethod`, `Constant`, `ConditionalGroup`, `If`,
 `Condition`, `Else`, and `EndIf`. Each worksheet has one routine. Recorded children
 are processed in order; nested expression inputs precede their enclosing result.
-An unexecuted branch may contain its evaluated condition but no statements.
+An unexecuted branch may contain its evaluated condition but no statements. An
+`If` and its `Else` must record different results; equal results are rejected.
 The optional worksheet `Tag` is retained exactly as supplied. It can distinguish
 multiple calculations attached to the same subject and effective dates.
 

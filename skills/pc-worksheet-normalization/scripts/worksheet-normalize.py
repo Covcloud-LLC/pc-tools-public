@@ -138,11 +138,14 @@ def validate(node, path):
         raise NormalizeError('unsupported_content', '{}: unexecuted branch contains statements'.format(path))
     if node.tag == 'ConditionalGroup':
         # A serialized group may contain several consecutive if/else/endif sets.
-        state = None
+        state = branch = None
         for child in node:
             if child.tag == 'If' and state is None:
-                state = 'if'
+                state, branch = 'if', child.get('Result')
             elif child.tag == 'Else' and state == 'if':
+                if child.get('Result') == branch:
+                    # An if/else runs exactly one branch; equal results are contradictory evidence.
+                    raise NormalizeError('unsupported_content', '{}: If and Else results must differ'.format(path))
                 state = 'else'
             elif child.tag == 'EndIf' and state is not None:
                 state = None
