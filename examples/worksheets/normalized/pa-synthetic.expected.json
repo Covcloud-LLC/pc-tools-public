@@ -1,0 +1,178 @@
+{
+  "format": "pc-worksheet-final-values",
+  "version": 2,
+  "worksheets": [
+    {
+      "identifiers": [
+        {
+          "identifier": {
+            "class": "app.lob.pa.rating.PARatingFunctions",
+            "context": [],
+            "kind": "function",
+            "name": "getYoungestDriver"
+          },
+          "value": {
+            "kind": "opaque",
+            "opaque": true,
+            "type": "entity.VehicleDriver",
+            "value": "Synthetic Driver"
+          }
+        },
+        {
+          "identifier": {
+            "context": [],
+            "factor": "Age",
+            "kind": "query",
+            "source": "",
+            "table": "pa_youthful_driver"
+          },
+          "value": {
+            "kind": "number",
+            "type": "java.lang.Integer",
+            "value": "20"
+          }
+        },
+        {
+          "identifier": {
+            "context": [
+              {
+                "class": "app.lob.pa.rating.PARatingFunctions",
+                "kind": "function",
+                "name": "getYoungestDriver"
+              }
+            ],
+            "kind": "argument",
+            "name": "vehicle"
+          },
+          "value": {
+            "kind": "opaque",
+            "opaque": true,
+            "type": "entity.PersonalVehicle",
+            "value": "Synthetic Vehicle"
+          }
+        },
+        {
+          "identifier": {
+            "context": [
+              {
+                "class": "app.lob.pa.rating.PARatingFunctions",
+                "kind": "function",
+                "name": "getYoungestDriver"
+              }
+            ],
+            "kind": "argument",
+            "name": "youthfulDriverLimit"
+          },
+          "value": {
+            "kind": "number",
+            "type": "java.lang.Integer",
+            "value": "20"
+          }
+        },
+        {
+          "identifier": {
+            "context": [
+              {
+                "factor": "Age",
+                "kind": "query",
+                "source": "",
+                "table": "pa_youthful_driver"
+              }
+            ],
+            "kind": "parameter",
+            "name": "JURISDICTION"
+          },
+          "value": {
+            "kind": "string",
+            "type": null,
+            "value": "CA"
+          }
+        },
+        {
+          "identifier": {
+            "context": [
+              {
+                "kind": "method",
+                "name": "setRounding",
+                "object": {
+                  "name": "_costdata",
+                  "type": "java.lang.String"
+                }
+              }
+            ],
+            "kind": "argument",
+            "name": "Mode"
+          },
+          "value": {
+            "kind": "opaque",
+            "opaque": true,
+            "type": "java.math.RoundingMode",
+            "value": "HALF_UP"
+          }
+        },
+        {
+          "identifier": {
+            "kind": "property",
+            "name": "AssignedDriver",
+            "object": {
+              "name": "driverassignmentinfo",
+              "type": "app.lob.pa.rating.DriverAssignmentInfo"
+            }
+          },
+          "value": {
+            "kind": "opaque",
+            "opaque": true,
+            "type": "entity.VehicleDriver",
+            "value": "Synthetic Driver"
+          }
+        },
+        {
+          "identifier": {
+            "kind": "variable",
+            "name": "previoustermamount"
+          },
+          "value": {
+            "kind": "null",
+            "type": null,
+            "value": null
+          }
+        },
+        {
+          "identifier": {
+            "kind": "variable",
+            "name": "vehicle"
+          },
+          "value": {
+            "kind": "opaque",
+            "opaque": true,
+            "type": "entity.PersonalVehicle",
+            "value": "Synthetic Vehicle"
+          }
+        },
+        {
+          "identifier": {
+            "kind": "variable",
+            "name": "youthfulDriverLimit"
+          },
+          "value": {
+            "kind": "number",
+            "type": "java.lang.Integer",
+            "value": "20"
+          }
+        }
+      ],
+      "metadata": {
+        "Description": "Synthetic driver assignment",
+        "EffectiveDate": "2026-01-01",
+        "ExpirationDate": "2027-01-01",
+        "FixedId": "PersonalVehicle:synthetic-1"
+      },
+      "routine": {
+        "RateBookCode": "pa_synthetic",
+        "RateBookEdition": "1",
+        "RoutineCode": "assign_driver",
+        "RoutineVersion": "1"
+      }
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Worksheet Normalization"
+  short_description: "Convert worksheets XML to final-value JSON"
+  default_prompt: "Use $pc-worksheet-normalization to convert my worksheet XML into comparable JSON."

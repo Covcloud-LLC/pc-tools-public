@@ -1,0 +1,208 @@
+{
+  "complete": true,
+  "format": "pc-worksheet-comparison",
+  "inputs": {
+    "baseline": {
+      "format": "pc-worksheet-final-values",
+      "identifier_count": 2,
+      "sha256": "3962798ac2143cefbd455bd43a132a65f62c340639e7776757e6fbd1d3f2acff",
+      "version": 2,
+      "worksheet_count": 2
+    },
+    "candidate": {
+      "format": "pc-worksheet-final-values",
+      "identifier_count": 2,
+      "sha256": "600380ccee24ccf26b8005d14ecbf41c3ceeb6d54f47846ee4f66273b9e6d55e",
+      "version": 2,
+      "worksheet_count": 2
+    }
+  },
+  "limits": [
+    "Caller assumes different retained runs of the same job and quote branch; inputs do not attest this.",
+    "Only exact qualified reference, Tag presence/value, raw interval and nonempty RoutineCode establish correspondence.",
+    "Unresolved worksheets are not inferred additions/removals, replacements, splits or merges.",
+    "Opaque text and receivers describe recorded representations, not underlying object equality.",
+    "Category counts overlap; changed_identifiers counts each changed identity once within established pairs."
+  ],
+  "outcome": "different",
+  "pairs": [
+    {
+      "baseline": {
+        "identifiers": [
+          {
+            "identifier": {
+              "kind": "variable",
+              "name": "finalAmount"
+            },
+            "value": {
+              "kind": "number",
+              "type": "java.math.BigDecimal",
+              "value": "10"
+            }
+          }
+        ],
+        "index": 0,
+        "metadata": {
+          "Description": "Driver assignment for vehicle Synthetic Vehicle, driver Synthetic Driver",
+          "EffectiveDate": "2026-01-01",
+          "ExpirationDate": "2027-01-01",
+          "FixedId": "PersonalVehicle:a",
+          "Tag": "driver:a"
+        },
+        "routine": {
+          "RateBookCode": "pa_synthetic",
+          "RateBookEdition": "1",
+          "RoutineCode": "pa_assign_driver_style2_rr",
+          "RoutineVersion": "1"
+        }
+      },
+      "candidate": {
+        "identifiers": [
+          {
+            "identifier": {
+              "kind": "variable",
+              "name": "finalAmount"
+            },
+            "value": {
+              "kind": "number",
+              "type": "java.math.BigDecimal",
+              "value": "11"
+            }
+          }
+        ],
+        "index": 1,
+        "metadata": {
+          "Description": "Driver assignment for vehicle Synthetic Vehicle, driver Synthetic Driver",
+          "EffectiveDate": "2026-01-01",
+          "ExpirationDate": "2027-01-01",
+          "FixedId": "PersonalVehicle:a",
+          "Tag": "driver:a"
+        },
+        "routine": {
+          "RateBookCode": "pa_synthetic",
+          "RateBookEdition": "1",
+          "RoutineCode": "pa_assign_driver_style2_rr",
+          "RoutineVersion": "1"
+        }
+      },
+      "context_changes": [],
+      "identifier_changes": [
+        {
+          "baseline": {
+            "identifier": {
+              "kind": "variable",
+              "name": "finalAmount"
+            },
+            "value": {
+              "kind": "number",
+              "type": "java.math.BigDecimal",
+              "value": "10"
+            }
+          },
+          "candidate": {
+            "identifier": {
+              "kind": "variable",
+              "name": "finalAmount"
+            },
+            "value": {
+              "kind": "number",
+              "type": "java.math.BigDecimal",
+              "value": "11"
+            }
+          },
+          "categories": [
+            "value"
+          ],
+          "identifier": {
+            "kind": "variable",
+            "name": "finalAmount"
+          }
+        }
+      ],
+      "outcome": "different"
+    },
+    {
+      "baseline": {
+        "identifiers": [
+          {
+            "identifier": {
+              "kind": "variable",
+              "name": "finalAmount"
+            },
+            "value": {
+              "kind": "number",
+              "type": "java.math.BigDecimal",
+              "value": "20"
+            }
+          }
+        ],
+        "index": 1,
+        "metadata": {
+          "Description": "Driver assignment for vehicle Synthetic Vehicle, driver Synthetic Driver",
+          "EffectiveDate": "2026-01-01",
+          "ExpirationDate": "2027-01-01",
+          "FixedId": "PersonalVehicle:a",
+          "Tag": "driver:b"
+        },
+        "routine": {
+          "RateBookCode": "pa_synthetic",
+          "RateBookEdition": "1",
+          "RoutineCode": "pa_assign_driver_style2_rr",
+          "RoutineVersion": "1"
+        }
+      },
+      "candidate": {
+        "identifiers": [
+          {
+            "identifier": {
+              "kind": "variable",
+              "name": "finalAmount"
+            },
+            "value": {
+              "kind": "number",
+              "type": "java.math.BigDecimal",
+              "value": "20"
+            }
+          }
+        ],
+        "index": 0,
+        "metadata": {
+          "Description": "Driver assignment for vehicle Synthetic Vehicle, driver Synthetic Driver",
+          "EffectiveDate": "2026-01-01",
+          "ExpirationDate": "2027-01-01",
+          "FixedId": "PersonalVehicle:a",
+          "Tag": "driver:b"
+        },
+        "routine": {
+          "RateBookCode": "pa_synthetic",
+          "RateBookEdition": "1",
+          "RoutineCode": "pa_assign_driver_style2_rr",
+          "RoutineVersion": "1"
+        }
+      },
+      "context_changes": [],
+      "identifier_changes": [],
+      "outcome": "equal"
+    }
+  ],
+  "policy": "exact-reference-tag-interval-routine-v1",
+  "summary": {
+    "changed_context_fields": 0,
+    "changed_identifiers": 1,
+    "changed_pairs": 1,
+    "compared_identifiers": 2,
+    "established_pairs": 2,
+    "identifier_categories": {
+      "added": 0,
+      "opaque_text": 0,
+      "receiver": 0,
+      "removed": 0,
+      "type": 0,
+      "value": 1
+    },
+    "unresolved_baseline": 0,
+    "unresolved_candidate": 0
+  },
+  "unresolved": [],
+  "version": 1
+}
