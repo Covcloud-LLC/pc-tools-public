@@ -1,0 +1,16 @@
+<Worksheets>
+  <Worksheet Description="Synthetic key factor" FixedId="HOPDwelling:synthetic-1" EffectiveDate="2026-01-01" ExpirationDate="2027-01-01">
+    <Routine RateBookCode="hop_synthetic" RateBookEdition="1" RoutineCode="key_factor" RoutineVersion="1">
+      <Store Variable="limit" Declaration="true" Result="100000.0000" ResultType="java.math.BigDecimal">
+        <Function ClassName="app.lob.hop.rating.HOPRatingFunctions" Name="getPrimaryCoverageLimit" Value="100000.0000" ValueType="java.math.BigDecimal">
+          <Argument Name="line" Value="Synthetic Homeowners Line" ValueType="productmodel.HOPLine"><Variable Name="policyline" Value="Synthetic Homeowners Line" ValueType="productmodel.HOPLine"/></Argument>
+        </Function>
+      </Store>
+      <PropertySet ObjectName="hopbasepremiuminfo" ObjectType="app.lob.hop.rating.HOPBasePremiumInfo" PropertyName="KeyFactor" Result="0.0100000" ResultType="java.math.BigDecimal">
+        <RateQuery TableCode="hop_key_factor" TableName="KeyFactor" FactorName="Factor" FactorSource="" Type="SingleFactor" Value="0.0100000" ValueType="java.math.BigDecimal">
+          <QueryParam Name="COVERAGE_PART" Value="hopdwelling"/><QueryParam Name="LIMIT" Value="&lt;&lt;100000,100000&gt;&gt;"/>
+        </RateQuery>
+      </PropertySet>
+    </Routine>
+  </Worksheet>
+</Worksheets>

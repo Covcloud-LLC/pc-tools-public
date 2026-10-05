@@ -1,0 +1,2065 @@
+{
+  "cases": [
+    {
+      "id": "E01",
+      "title": "Self comparison",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E02",
+      "title": "Unmatched worksheet with nonempty inputs",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          },
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:b"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:b"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E03",
+      "title": "Identifier array order",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              },
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "basis"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "7"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "basis"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "7"
+                }
+              },
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E04",
+      "title": "Exact decimal change",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20.0000000000000000000000000000000000001"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E05",
+      "title": "Type-only change",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.lang.Integer",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E06",
+      "title": "Number versus string",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "string",
+                  "type": "java.lang.String",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E07",
+      "title": "Final null",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "null",
+                  "type": "java.math.BigDecimal",
+                  "value": null
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E08",
+      "title": "Null versus absent identifier",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "null",
+                  "type": "java.math.BigDecimal",
+                  "value": null
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E09",
+      "title": "Opaque apparent ID change",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "opaque",
+                  "type": "entity.PersonalVehicle",
+                  "value": "Vehicle:17",
+                  "opaque": true
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "opaque",
+                  "type": "entity.PersonalVehicle",
+                  "value": "Vehicle:18",
+                  "opaque": true
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E10",
+      "title": "Receiver-only change",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "property",
+                  "name": "TermAmount",
+                  "object": {
+                    "name": "costdata",
+                    "type": "CostData"
+                  }
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                },
+                "receiver": {
+                  "type": "CostData",
+                  "value": "CostData:17",
+                  "opaque": true
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "property",
+                  "name": "TermAmount",
+                  "object": {
+                    "name": "costdata",
+                    "type": "CostData"
+                  }
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                },
+                "receiver": {
+                  "type": "CostData",
+                  "value": "CostData:18",
+                  "opaque": true
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E11",
+      "title": "Missing worksheet reference",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E12",
+      "title": "Duplicate worksheet context",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          },
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E13",
+      "title": "Changed source reference",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:replacement"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E14",
+      "title": "Empty versus absent Tag",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a",
+              "Tag": ""
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E15",
+      "title": "Description-only change",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Renamed coverage",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E16",
+      "title": "Punctuation and structured scope",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "property",
+                  "name": "Value",
+                  "object": {
+                    "name": "a.b",
+                    "type": "T"
+                  }
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "int",
+                  "value": "1"
+                }
+              },
+              {
+                "identifier": {
+                  "kind": "property",
+                  "name": "b.Value",
+                  "object": {
+                    "name": "a",
+                    "type": "T"
+                  }
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "int",
+                  "value": "2"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "property",
+                  "name": "Value",
+                  "object": {
+                    "name": "a.b",
+                    "type": "T"
+                  }
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "int",
+                  "value": "1"
+                }
+              },
+              {
+                "identifier": {
+                  "kind": "property",
+                  "name": "b.Value",
+                  "object": {
+                    "name": "a",
+                    "type": "T"
+                  }
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "int",
+                  "value": "3"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E17",
+      "title": "Duplicate structured identifier record",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              },
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E18",
+      "title": "Changed interval boundary",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-08-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E19",
+      "title": "One interval split into two",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2027-01-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          },
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-07-01",
+              "ExpirationDate": "2027-01-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E20",
+      "title": "Equivalent instant with different offset text",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01T00:00:00-05:00",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01T05:00:00Z",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E21",
+      "title": "Routine version change",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "2"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E22",
+      "title": "Unsupported contract version",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 999,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E23",
+      "title": "Empty documents",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": []
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": []
+      }
+    },
+    {
+      "id": "E24",
+      "title": "Boolean change",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "boolean",
+                  "type": "boolean",
+                  "value": false
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "boolean",
+                  "type": "boolean",
+                  "value": true
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E25",
+      "title": "Invalid numeric representation",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": 20
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E26",
+      "title": "Routine code change",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "different_calculation_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E27",
+      "title": "Changed Tag",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a",
+              "Tag": "driver:old"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a",
+              "Tag": "driver:new"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "E28",
+      "title": "Missing required value record",
+      "baseline": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                },
+                "value": {
+                  "kind": "number",
+                  "type": "java.math.BigDecimal",
+                  "value": "20"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      },
+      "candidate": {
+        "format": "pc-worksheet-final-values",
+        "version": 2,
+        "worksheets": [
+          {
+            "identifiers": [
+              {
+                "identifier": {
+                  "kind": "variable",
+                  "name": "finalAmount"
+                }
+              }
+            ],
+            "metadata": {
+              "Description": "Building Coverage Basic Group I",
+              "EffectiveDate": "2026-01-01",
+              "ExpirationDate": "2026-07-01",
+              "FixedId": "CPBuildingCovGrp1Cost:a"
+            },
+            "routine": {
+              "RateBookCode": "cp_synthetic",
+              "RateBookEdition": "1",
+              "RoutineCode": "cp_cov_premium_rr",
+              "RoutineVersion": "1"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

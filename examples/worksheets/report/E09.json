@@ -1,0 +1,148 @@
+{
+  "complete": true,
+  "format": "pc-worksheet-comparison",
+  "inputs": {
+    "baseline": {
+      "format": "pc-worksheet-final-values",
+      "identifier_count": 1,
+      "sha256": "37e27493bbb032aa5f60470166dddc388317cfc2d24fa138aa45ca224768fc9e",
+      "version": 2,
+      "worksheet_count": 1
+    },
+    "candidate": {
+      "format": "pc-worksheet-final-values",
+      "identifier_count": 1,
+      "sha256": "c12aac67a06191ac3dd71aa744b09e6954de710d9bcf6e8c47eed45b9b48a381",
+      "version": 2,
+      "worksheet_count": 1
+    }
+  },
+  "limits": [
+    "Caller assumes different retained runs of the same job and quote branch; inputs do not attest this.",
+    "Only exact qualified reference, Tag presence/value, raw interval and nonempty RoutineCode establish correspondence.",
+    "Unresolved worksheets are not inferred additions/removals, replacements, splits or merges.",
+    "Opaque text and receivers describe recorded representations, not underlying object equality.",
+    "Category counts overlap; changed_identifiers counts each changed identity once within established pairs."
+  ],
+  "outcome": "different",
+  "pairs": [
+    {
+      "baseline": {
+        "identifiers": [
+          {
+            "identifier": {
+              "kind": "variable",
+              "name": "finalAmount"
+            },
+            "value": {
+              "kind": "opaque",
+              "opaque": true,
+              "type": "entity.PersonalVehicle",
+              "value": "Vehicle:17"
+            }
+          }
+        ],
+        "index": 0,
+        "metadata": {
+          "Description": "Building Coverage Basic Group I",
+          "EffectiveDate": "2026-01-01",
+          "ExpirationDate": "2026-07-01",
+          "FixedId": "CPBuildingCovGrp1Cost:a"
+        },
+        "routine": {
+          "RateBookCode": "cp_synthetic",
+          "RateBookEdition": "1",
+          "RoutineCode": "cp_cov_premium_rr",
+          "RoutineVersion": "1"
+        }
+      },
+      "candidate": {
+        "identifiers": [
+          {
+            "identifier": {
+              "kind": "variable",
+              "name": "finalAmount"
+            },
+            "value": {
+              "kind": "opaque",
+              "opaque": true,
+              "type": "entity.PersonalVehicle",
+              "value": "Vehicle:18"
+            }
+          }
+        ],
+        "index": 0,
+        "metadata": {
+          "Description": "Building Coverage Basic Group I",
+          "EffectiveDate": "2026-01-01",
+          "ExpirationDate": "2026-07-01",
+          "FixedId": "CPBuildingCovGrp1Cost:a"
+        },
+        "routine": {
+          "RateBookCode": "cp_synthetic",
+          "RateBookEdition": "1",
+          "RoutineCode": "cp_cov_premium_rr",
+          "RoutineVersion": "1"
+        }
+      },
+      "context_changes": [],
+      "identifier_changes": [
+        {
+          "baseline": {
+            "identifier": {
+              "kind": "variable",
+              "name": "finalAmount"
+            },
+            "value": {
+              "kind": "opaque",
+              "opaque": true,
+              "type": "entity.PersonalVehicle",
+              "value": "Vehicle:17"
+            }
+          },
+          "candidate": {
+            "identifier": {
+              "kind": "variable",
+              "name": "finalAmount"
+            },
+            "value": {
+              "kind": "opaque",
+              "opaque": true,
+              "type": "entity.PersonalVehicle",
+              "value": "Vehicle:18"
+            }
+          },
+          "categories": [
+            "value",
+            "opaque_text"
+          ],
+          "identifier": {
+            "kind": "variable",
+            "name": "finalAmount"
+          }
+        }
+      ],
+      "outcome": "different"
+    }
+  ],
+  "policy": "exact-reference-tag-interval-routine-v1",
+  "summary": {
+    "changed_context_fields": 0,
+    "changed_identifiers": 1,
+    "changed_pairs": 1,
+    "compared_identifiers": 1,
+    "established_pairs": 1,
+    "identifier_categories": {
+      "added": 0,
+      "opaque_text": 1,
+      "receiver": 0,
+      "removed": 0,
+      "type": 0,
+      "value": 1
+    },
+    "unresolved_baseline": 0,
+    "unresolved_candidate": 0
+  },
+  "unresolved": [],
+  "version": 1
+}

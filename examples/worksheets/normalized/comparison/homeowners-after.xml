@@ -1,0 +1,14 @@
+<Worksheets>
+  <Worksheet FixedId="HOPDwellingCovCost:x" Description="Base Premium" EffectiveDate="2026-01-01" ExpirationDate="2027-01-01">
+    <Routine RateBookCode="hop_synthetic" RateBookEdition="1" RoutineCode="hop_base_rate_premium_rr" RoutineVersion="1">
+      <Store Variable="finalAmount" Result="12" ResultType="java.math.BigDecimal"/>
+      <Store Variable="finalAmount" Result="20" ResultType="java.math.BigDecimal"/>
+    </Routine>
+  </Worksheet>
+  <Worksheet FixedId="HOPDwellingCovCost:y" Description="Base Premium" EffectiveDate="2026-01-01" ExpirationDate="2027-01-01">
+    <Routine RateBookCode="hop_synthetic" RateBookEdition="1" RoutineCode="hop_base_rate_premium_rr" RoutineVersion="1">
+      <Store Variable="finalAmount" Result="16" ResultType="java.math.BigDecimal"/>
+      <Store Variable="finalAmount" Result="20" ResultType="java.math.BigDecimal"/>
+    </Routine>
+  </Worksheet>
+</Worksheets>

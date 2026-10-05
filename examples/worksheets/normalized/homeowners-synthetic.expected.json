@@ -1,0 +1,144 @@
+{
+  "format": "pc-worksheet-final-values",
+  "version": 2,
+  "worksheets": [
+    {
+      "identifiers": [
+        {
+          "identifier": {
+            "class": "app.lob.hop.rating.HOPRatingFunctions",
+            "context": [],
+            "kind": "function",
+            "name": "getPrimaryCoverageLimit"
+          },
+          "value": {
+            "kind": "number",
+            "type": "java.math.BigDecimal",
+            "value": "100000"
+          }
+        },
+        {
+          "identifier": {
+            "context": [],
+            "factor": "Factor",
+            "kind": "query",
+            "source": "",
+            "table": "hop_key_factor"
+          },
+          "value": {
+            "kind": "number",
+            "type": "java.math.BigDecimal",
+            "value": "0.01"
+          }
+        },
+        {
+          "identifier": {
+            "context": [
+              {
+                "class": "app.lob.hop.rating.HOPRatingFunctions",
+                "kind": "function",
+                "name": "getPrimaryCoverageLimit"
+              }
+            ],
+            "kind": "argument",
+            "name": "line"
+          },
+          "value": {
+            "kind": "opaque",
+            "opaque": true,
+            "type": "productmodel.HOPLine",
+            "value": "Synthetic Homeowners Line"
+          }
+        },
+        {
+          "identifier": {
+            "context": [
+              {
+                "factor": "Factor",
+                "kind": "query",
+                "source": "",
+                "table": "hop_key_factor"
+              }
+            ],
+            "kind": "parameter",
+            "name": "COVERAGE_PART"
+          },
+          "value": {
+            "kind": "string",
+            "type": null,
+            "value": "hopdwelling"
+          }
+        },
+        {
+          "identifier": {
+            "context": [
+              {
+                "factor": "Factor",
+                "kind": "query",
+                "source": "",
+                "table": "hop_key_factor"
+              }
+            ],
+            "kind": "parameter",
+            "name": "LIMIT"
+          },
+          "value": {
+            "kind": "string",
+            "type": null,
+            "value": "<<100000,100000>>"
+          }
+        },
+        {
+          "identifier": {
+            "kind": "property",
+            "name": "KeyFactor",
+            "object": {
+              "name": "hopbasepremiuminfo",
+              "type": "app.lob.hop.rating.HOPBasePremiumInfo"
+            }
+          },
+          "value": {
+            "kind": "number",
+            "type": "java.math.BigDecimal",
+            "value": "0.01"
+          }
+        },
+        {
+          "identifier": {
+            "kind": "variable",
+            "name": "limit"
+          },
+          "value": {
+            "kind": "number",
+            "type": "java.math.BigDecimal",
+            "value": "100000"
+          }
+        },
+        {
+          "identifier": {
+            "kind": "variable",
+            "name": "policyline"
+          },
+          "value": {
+            "kind": "opaque",
+            "opaque": true,
+            "type": "productmodel.HOPLine",
+            "value": "Synthetic Homeowners Line"
+          }
+        }
+      ],
+      "metadata": {
+        "Description": "Synthetic key factor",
+        "EffectiveDate": "2026-01-01",
+        "ExpirationDate": "2027-01-01",
+        "FixedId": "HOPDwelling:synthetic-1"
+      },
+      "routine": {
+        "RateBookCode": "hop_synthetic",
+        "RateBookEdition": "1",
+        "RoutineCode": "key_factor",
+        "RoutineVersion": "1"
+      }
+    }
+  ]
+}

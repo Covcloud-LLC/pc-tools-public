@@ -1,0 +1,13 @@
+<Worksheets>
+  <Worksheet Description="Synthetic building coverage" FixedId="CPBuildingCovGrp1Cost:synthetic-1" EffectiveDate="2026-01-01" ExpirationDate="2027-01-01">
+    <Routine RateBookCode="cp_synthetic" RateBookEdition="1" RoutineCode="coverage_premium" RoutineVersion="1">
+      <Store Variable="x" Result="10" ResultType="java.math.BigDecimal"/>
+      <Store Variable="x" Result="11" ResultType="java.math.BigDecimal"><Variable Name="x" Value="10" ValueType="java.math.BigDecimal"/><Constant Operator="Plus" Value="1" ValueType="java.lang.Integer"/></Store>
+      <Store Variable="nullable" Result="100" ResultType="java.math.BigDecimal"/>
+      <Store Variable="nullable"/>
+      <Store Variable="code" Result="001" ResultType="java.lang.String"/>
+      <PropertySet ObjectName="costdata" ObjectType="CostData" PropertyName="AdjustedRate" Result="0.099180000000000000000000000000000" ResultType="java.math.BigDecimal"/>
+      <PropertySet ObjectName="costdata" ObjectType="CostData" PropertyName="TermAmount" Result="992.00" ResultType="java.math.BigDecimal"><PropertyGet ObjectName="costdata" ObjectType="CostData" ObjectValue="SyntheticCostData" PropertyName="AdjustedRate" Value="0.0992" ValueType="java.math.BigDecimal"/></PropertySet>
+    </Routine>
+  </Worksheet>
+</Worksheets>

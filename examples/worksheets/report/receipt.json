@@ -1,0 +1,432 @@
+{
+  "purpose": "Synthetic comparison results for the report examples and tests.",
+  "base": "d599efa5e12f558f39ab0c3954f7d560cfcafc3c",
+  "comparator_sha256": "cd183de55e404a7fefc6cbc9f0e61919fe5c5b00532ad77903eb2349784f397d",
+  "cases": [
+    {
+      "case": "cp",
+      "source": "examples/worksheets/normalized/comparison/cp-{before,after}.expected.json",
+      "result": "cp.json",
+      "exit": 0,
+      "sha256": "48817105de0045463b7bf890cfd783b0c0c68b41aac55ed030466f3572d57d28",
+      "summary": {
+        "changed_context_fields": 3,
+        "changed_identifiers": 1,
+        "changed_pairs": 3,
+        "compared_identifiers": 3,
+        "established_pairs": 3,
+        "identifier_categories": {
+          "added": 0,
+          "opaque_text": 0,
+          "receiver": 0,
+          "removed": 0,
+          "type": 0,
+          "value": 1
+        },
+        "unresolved_baseline": 0,
+        "unresolved_candidate": 0
+      },
+      "outcome": "different"
+    },
+    {
+      "case": "pa",
+      "source": "examples/worksheets/normalized/comparison/pa-{before,after}.expected.json",
+      "result": "pa.json",
+      "exit": 0,
+      "sha256": "0a270182557a9019cfe8f72c31dc744d0bd6912a89f1b6f13c1fd8e27efc3158",
+      "summary": {
+        "changed_context_fields": 0,
+        "changed_identifiers": 1,
+        "changed_pairs": 1,
+        "compared_identifiers": 2,
+        "established_pairs": 2,
+        "identifier_categories": {
+          "added": 0,
+          "opaque_text": 0,
+          "receiver": 0,
+          "removed": 0,
+          "type": 0,
+          "value": 1
+        },
+        "unresolved_baseline": 0,
+        "unresolved_candidate": 0
+      },
+      "outcome": "different"
+    },
+    {
+      "case": "homeowners",
+      "source": "examples/worksheets/normalized/comparison/homeowners-{before,after}.expected.json",
+      "result": "homeowners.json",
+      "exit": 3,
+      "sha256": "178addd5c5bffe0c26abdfc70ea3d1ef50c48ea180ccc30bd648e4b3f0f285bf",
+      "summary": {
+        "changed_context_fields": 0,
+        "changed_identifiers": 0,
+        "changed_pairs": 0,
+        "compared_identifiers": 0,
+        "established_pairs": 0,
+        "identifier_categories": {
+          "added": 0,
+          "opaque_text": 0,
+          "receiver": 0,
+          "removed": 0,
+          "type": 0,
+          "value": 0
+        },
+        "unresolved_baseline": 2,
+        "unresolved_candidate": 2
+      },
+      "outcome": "incomplete"
+    },
+    {
+      "case": "E01",
+      "source": "tests/worksheet-compare/fixtures/edge-cases.json#E01",
+      "result": "E01.json",
+      "exit": 0,
+      "sha256": "02aaeed738df34e02292bcdbaa294a97aff3428cca4e9681c9f84978fcea0621",
+      "summary": {
+        "changed_context_fields": 0,
+        "changed_identifiers": 0,
+        "changed_pairs": 0,
+        "compared_identifiers": 1,
+        "established_pairs": 1,
+        "identifier_categories": {
+          "added": 0,
+          "opaque_text": 0,
+          "receiver": 0,
+          "removed": 0,
+          "type": 0,
+          "value": 0
+        },
+        "unresolved_baseline": 0,
+        "unresolved_candidate": 0
+      },
+      "outcome": "equal"
+    },
+    {
+      "case": "E02",
+      "source": "tests/worksheet-compare/fixtures/edge-cases.json#E02",
+      "result": "E02.json",
+      "exit": 3,
+      "sha256": "608e6f581d63775b91b3384f302fd39c10b565086b7232a5ad4931a09cb3e8bb",
+      "summary": {
+        "changed_context_fields": 0,
+        "changed_identifiers": 0,
+        "changed_pairs": 0,
+        "compared_identifiers": 1,
+        "established_pairs": 1,
+        "identifier_categories": {
+          "added": 0,
+          "opaque_text": 0,
+          "receiver": 0,
+          "removed": 0,
+          "type": 0,
+          "value": 0
+        },
+        "unresolved_baseline": 1,
+        "unresolved_candidate": 0
+      },
+      "outcome": "incomplete"
+    },
+    {
+      "case": "E05",
+      "source": "tests/worksheet-compare/fixtures/edge-cases.json#E05",
+      "result": "E05.json",
+      "exit": 0,
+      "sha256": "f63a173ca88b1374c42f0c8d6f04d0f6ced741e66d2ccea52eee6fd442d1d1f3",
+      "summary": {
+        "changed_context_fields": 0,
+        "changed_identifiers": 1,
+        "changed_pairs": 1,
+        "compared_identifiers": 1,
+        "established_pairs": 1,
+        "identifier_categories": {
+          "added": 0,
+          "opaque_text": 0,
+          "receiver": 0,
+          "removed": 0,
+          "type": 1,
+          "value": 0
+        },
+        "unresolved_baseline": 0,
+        "unresolved_candidate": 0
+      },
+      "outcome": "different"
+    },
+    {
+      "case": "E06",
+      "source": "tests/worksheet-compare/fixtures/edge-cases.json#E06",
+      "result": "E06.json",
+      "exit": 0,
+      "sha256": "bd4536ea462088da0341229ceb9126582ef28b7b02a1fdb61491de54355cfe3d",
+      "summary": {
+        "changed_context_fields": 0,
+        "changed_identifiers": 1,
+        "changed_pairs": 1,
+        "compared_identifiers": 1,
+        "established_pairs": 1,
+        "identifier_categories": {
+          "added": 0,
+          "opaque_text": 0,
+          "receiver": 0,
+          "removed": 0,
+          "type": 1,
+          "value": 1
+        },
+        "unresolved_baseline": 0,
+        "unresolved_candidate": 0
+      },
+      "outcome": "different"
+    },
+    {
+      "case": "E07",
+      "source": "tests/worksheet-compare/fixtures/edge-cases.json#E07",
+      "result": "E07.json",
+      "exit": 0,
+      "sha256": "3cf5c9e615a7f86a091e56a0f07c1d4087ec72d48c353821d3c274a8c80d2e35",
+      "summary": {
+        "changed_context_fields": 0,
+        "changed_identifiers": 1,
+        "changed_pairs": 1,
+        "compared_identifiers": 1,
+        "established_pairs": 1,
+        "identifier_categories": {
+          "added": 0,
+          "opaque_text": 0,
+          "receiver": 0,
+          "removed": 0,
+          "type": 1,
+          "value": 1
+        },
+        "unresolved_baseline": 0,
+        "unresolved_candidate": 0
+      },
+      "outcome": "different"
+    },
+    {
+      "case": "E08",
+      "source": "tests/worksheet-compare/fixtures/edge-cases.json#E08",
+      "result": "E08.json",
+      "exit": 0,
+      "sha256": "b44a588fb85bd8a0a73b28d3d6de4e8f29280180f86b2f2deb17119557994554",
+      "summary": {
+        "changed_context_fields": 0,
+        "changed_identifiers": 1,
+        "changed_pairs": 1,
+        "compared_identifiers": 1,
+        "established_pairs": 1,
+        "identifier_categories": {
+          "added": 0,
+          "opaque_text": 0,
+          "receiver": 0,
+          "removed": 1,
+          "type": 0,
+          "value": 0
+        },
+        "unresolved_baseline": 0,
+        "unresolved_candidate": 0
+      },
+      "outcome": "different"
+    },
+    {
+      "case": "E09",
+      "source": "tests/worksheet-compare/fixtures/edge-cases.json#E09",
+      "result": "E09.json",
+      "exit": 0,
+      "sha256": "c9254385e44ac7ce85332caaca8e8da8a8af5d7ff50777e2475edc25838318c0",
+      "summary": {
+        "changed_context_fields": 0,
+        "changed_identifiers": 1,
+        "changed_pairs": 1,
+        "compared_identifiers": 1,
+        "established_pairs": 1,
+        "identifier_categories": {
+          "added": 0,
+          "opaque_text": 1,
+          "receiver": 0,
+          "removed": 0,
+          "type": 0,
+          "value": 1
+        },
+        "unresolved_baseline": 0,
+        "unresolved_candidate": 0
+      },
+      "outcome": "different"
+    },
+    {
+      "case": "E10",
+      "source": "tests/worksheet-compare/fixtures/edge-cases.json#E10",
+      "result": "E10.json",
+      "exit": 0,
+      "sha256": "9597802ec00117d8a5cd00b9d25dfee39fcac3cbbacd11eea5f78325afa8b970",
+      "summary": {
+        "changed_context_fields": 0,
+        "changed_identifiers": 1,
+        "changed_pairs": 1,
+        "compared_identifiers": 1,
+        "established_pairs": 1,
+        "identifier_categories": {
+          "added": 0,
+          "opaque_text": 0,
+          "receiver": 1,
+          "removed": 0,
+          "type": 0,
+          "value": 0
+        },
+        "unresolved_baseline": 0,
+        "unresolved_candidate": 0
+      },
+      "outcome": "different"
+    },
+    {
+      "case": "E12",
+      "source": "tests/worksheet-compare/fixtures/edge-cases.json#E12",
+      "result": "E12.json",
+      "exit": 3,
+      "sha256": "b7c1a04cf53cd5e363e5b44f80a652f3360a25a90f53624a4be7d8d762c577f0",
+      "summary": {
+        "changed_context_fields": 0,
+        "changed_identifiers": 0,
+        "changed_pairs": 0,
+        "compared_identifiers": 0,
+        "established_pairs": 0,
+        "identifier_categories": {
+          "added": 0,
+          "opaque_text": 0,
+          "receiver": 0,
+          "removed": 0,
+          "type": 0,
+          "value": 0
+        },
+        "unresolved_baseline": 1,
+        "unresolved_candidate": 2
+      },
+      "outcome": "incomplete"
+    },
+    {
+      "case": "E14",
+      "source": "tests/worksheet-compare/fixtures/edge-cases.json#E14",
+      "result": "E14.json",
+      "exit": 3,
+      "sha256": "f853454510595d54fbaeb104c5614b9493e0e6902f49f7061ee326f80cbcfe59",
+      "summary": {
+        "changed_context_fields": 0,
+        "changed_identifiers": 0,
+        "changed_pairs": 0,
+        "compared_identifiers": 0,
+        "established_pairs": 0,
+        "identifier_categories": {
+          "added": 0,
+          "opaque_text": 0,
+          "receiver": 0,
+          "removed": 0,
+          "type": 0,
+          "value": 0
+        },
+        "unresolved_baseline": 1,
+        "unresolved_candidate": 1
+      },
+      "outcome": "incomplete"
+    },
+    {
+      "case": "E16",
+      "source": "tests/worksheet-compare/fixtures/edge-cases.json#E16",
+      "result": "E16.json",
+      "exit": 0,
+      "sha256": "138597c5d9a5b726cb2647ac450c23483fd297dcd91734b0558cec0c34bf001e",
+      "summary": {
+        "changed_context_fields": 0,
+        "changed_identifiers": 1,
+        "changed_pairs": 1,
+        "compared_identifiers": 2,
+        "established_pairs": 1,
+        "identifier_categories": {
+          "added": 0,
+          "opaque_text": 0,
+          "receiver": 0,
+          "removed": 0,
+          "type": 0,
+          "value": 1
+        },
+        "unresolved_baseline": 0,
+        "unresolved_candidate": 0
+      },
+      "outcome": "different"
+    },
+    {
+      "case": "E21",
+      "source": "tests/worksheet-compare/fixtures/edge-cases.json#E21",
+      "result": "E21.json",
+      "exit": 0,
+      "sha256": "f68b8ef95816578d74c685d04b4f8aace635b5907d0a4ed3306f8b791b141193",
+      "summary": {
+        "changed_context_fields": 1,
+        "changed_identifiers": 0,
+        "changed_pairs": 1,
+        "compared_identifiers": 1,
+        "established_pairs": 1,
+        "identifier_categories": {
+          "added": 0,
+          "opaque_text": 0,
+          "receiver": 0,
+          "removed": 0,
+          "type": 0,
+          "value": 0
+        },
+        "unresolved_baseline": 0,
+        "unresolved_candidate": 0
+      },
+      "outcome": "different"
+    },
+    {
+      "case": "E24",
+      "source": "tests/worksheet-compare/fixtures/edge-cases.json#E24",
+      "result": "E24.json",
+      "exit": 0,
+      "sha256": "3f16e9976611430db3fdaf32c955aecd9d7bb846fe4c0b1bca12476319aaff92",
+      "summary": {
+        "changed_context_fields": 0,
+        "changed_identifiers": 1,
+        "changed_pairs": 1,
+        "compared_identifiers": 1,
+        "established_pairs": 1,
+        "identifier_categories": {
+          "added": 0,
+          "opaque_text": 0,
+          "receiver": 0,
+          "removed": 0,
+          "type": 0,
+          "value": 1
+        },
+        "unresolved_baseline": 0,
+        "unresolved_candidate": 0
+      },
+      "outcome": "different"
+    },
+    {
+      "case": "E11",
+      "source": "tests/worksheet-compare/fixtures/edge-cases.json#E11",
+      "result": "E11.json",
+      "exit": 3,
+      "sha256": "8bfc5d77b753bd5190675c3570767bfcacca76466f689488cfcad823cb5d0b7a",
+      "summary": {
+        "changed_context_fields": 0,
+        "changed_identifiers": 0,
+        "changed_pairs": 0,
+        "compared_identifiers": 0,
+        "established_pairs": 0,
+        "identifier_categories": {
+          "added": 0,
+          "opaque_text": 0,
+          "receiver": 0,
+          "removed": 0,
+          "type": 0,
+          "value": 0
+        },
+        "unresolved_baseline": 1,
+        "unresolved_candidate": 1
+      },
+      "outcome": "incomplete"
+    }
+  ]
+}
