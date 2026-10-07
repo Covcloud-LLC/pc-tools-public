@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare two PC final-values v2 captures; optionally write a Markdown report (Python 3.8+ stdlib)."""
+"""Compare two PC final-values v3 captures; optionally write a Markdown report (Python 3.8+ stdlib)."""
 import argparse
 import hashlib
 import json
@@ -16,21 +16,15 @@ class CompareError(Exception):
         self.category = category
 
 
-NUMERIC = {'byte', 'short', 'int', 'long', 'float', 'double',
-           'java.lang.Byte', 'java.lang.Short', 'java.lang.Integer', 'java.lang.Long',
-           'java.lang.Float', 'java.lang.Double', 'java.math.BigInteger', 'java.math.BigDecimal'}
-STRINGS = {'java.lang.String', 'java.lang.Character', 'char'}
-BOOLEANS = {'boolean', 'java.lang.Boolean'}
 METADATA = {'FixedId', 'Tag', 'EffectiveDate', 'ExpirationDate', 'Description'}
 ROUTINE = {'RateBookCode', 'RateBookEdition', 'RoutineCode', 'RoutineVersion'}
-CATEGORIES = ('added', 'removed', 'value', 'type', 'receiver')
+CATEGORIES = ('added', 'removed', 'value')
 POLICY = 'exact-reference-tag-interval-routine-v1'
 LIMITS = ['Caller assumes different retained runs of the same job and quote branch; inputs do not attest this.',
           'Only exact qualified reference, Tag presence/value, raw interval and nonempty RoutineCode establish correspondence.',
           'Unresolved worksheets are not inferred additions/removals, replacements, splits or merges.',
-          'Opaque values and receivers describe recorded text, not underlying object equality.',
-          'Category counts overlap; changed_identifiers counts each changed identity once within established pairs.']
-DECIMAL = re.compile(r'(?:0|-?(?:[1-9][0-9]*(?:\.[0-9]*[1-9])?|0\.[0-9]*[1-9]))\Z')
+          'Object and typekey values are recorded text, not underlying object equality.',
+          'changed_identifiers counts each changed name once within established pairs.']
 
 
 def key(value):
@@ -60,90 +54,18 @@ def string(value, path, nonempty=False):
     require(not any(0xD800 <= ord(c) <= 0xDFFF for c in value), path, 'unpaired Unicode surrogate')
 
 
-def object_identity(value, path):
-    shape(value, {'name', 'type'}, set(), path)
-    for field in value:
-        string(value[field], path + '.' + field, True)
-
-
-def atom(value, path):
-    require(isinstance(value, dict), path, 'expected identity object')
-    kind = value.get('kind')
-    fields = {'function': {'kind', 'name', 'class'}, 'method': {'kind', 'name', 'object'},
-              'query': {'kind', 'table', 'factor', 'source'},
-              'argument': {'kind', 'name'}, 'parameter': {'kind', 'name'}}
-    require(isinstance(kind, str) and kind in fields, path, 'unsupported context kind')
-    shape(value, fields[kind], set(), path)
-    for field in fields[kind] - {'kind', 'object'}:
-        string(value[field], path + '.' + field, field != 'source')
-    if 'object' in value:
-        object_identity(value['object'], path + '.object')
-
-
-def context(value, path, owner=None):
-    require(isinstance(value, list), path, 'expected context array')
-    for i, item in enumerate(value):
-        atom(item, '{}[{}]'.format(path, i))
-    prefix = value
-    if owner:
-        require(bool(value) and value[-1]['kind'] in owner, path, 'missing appropriate owning call/query')
-        prefix = value[:-1]
-        if value[-1]['kind'] == 'method':
-            require(not prefix, path, 'method must be at routine scope')
-    require(len(prefix) % 2 == 0, path, 'expected enclosing call/named-input pairs')
-    for i in range(0, len(prefix), 2):
-        require(prefix[i]['kind'] in {'function', 'method'} and prefix[i + 1]['kind'] == 'argument', path,
-                'invalid enclosing call/named-input sequence')
-        require(prefix[i]['kind'] != 'method' or i == 0, path, 'method must be at routine scope')
-
-
-def identifier(value, path):
-    require(isinstance(value, dict), path, 'expected identifier object')
-    kind = value.get('kind')
-    fields = {'variable': {'kind', 'name'}, 'property': {'kind', 'name', 'object'},
-              'function': {'kind', 'class', 'name', 'context'},
-              'query': {'kind', 'table', 'factor', 'source', 'context'},
-              'argument': {'kind', 'name', 'context'}, 'parameter': {'kind', 'name', 'context'}}
-    require(isinstance(kind, str) and kind in fields, path, 'unsupported identifier kind')
-    shape(value, fields[kind], set(), path)
-    for field in fields[kind] - {'kind', 'object', 'context'}:
-        string(value[field], path + '.' + field, field != 'source')
-    if 'object' in value:
-        object_identity(value['object'], path + '.object')
-    if 'context' in value:
-        owner = {'argument': {'function', 'method'}, 'parameter': {'query'}}.get(kind)
-        context(value['context'], path + '.context', owner)
-
-
 def final_value(value, path):
-    shape(value, {'kind', 'type', 'value'}, {'opaque'}, path)
-    kind, recorded_type, raw = value['kind'], value['type'], value['value']
-    require(recorded_type is None or isinstance(recorded_type, str), path, 'type must be string or null')
-    if recorded_type is not None:
-        string(recorded_type, path + '.type')
-    require(isinstance(kind, str) and kind in {'null', 'number', 'string', 'boolean', 'opaque'}, path, 'unsupported value kind')
-    require(('opaque' in value) == (kind == 'opaque'), path, 'opaque marker allowed and required only for opaque values')
-    if kind == 'null':
-        require(raw is None, path, 'null kind requires JSON null')
-        return
-    expected = ('number' if recorded_type in NUMERIC else 'boolean' if recorded_type in BOOLEANS
-                else 'string' if recorded_type is None or recorded_type in STRINGS else 'opaque')
-    require(kind == expected, path, 'kind does not match recorded type')
-    if kind == 'boolean':
-        require(type(raw) is bool, path, 'boolean requires JSON boolean')
-    else:
-        string(raw, path + '.value')
-        if kind == 'number':
-            require(bool(DECIMAL.fullmatch(raw)) and len(raw.replace('-', '').replace('.', '')) <= 100000,
-                    path, 'number requires canonical finite decimal text, at most 100000 digits')
-        if kind == 'opaque':
-            require(value['opaque'] is True, path, 'opaque marker must be true')
+    # Plain JSON: numbers are canonical decimal text, so a string; also boolean or null.
+    require(value is None or type(value) is bool or isinstance(value, str), path, 'expected string, boolean or null')
+    if isinstance(value, str):
+        string(value, path)
 
 
 def validate(document):
     shape(document, {'format', 'version', 'worksheets'}, set(), '$')
-    if document['format'] != 'pc-worksheet-final-values' or type(document['version']) is not int or document['version'] != 2:
-        raise CompareError('unsupported_version', 'Both inputs must be pc-worksheet-final-values version 2; no v1 or POC envelopes')
+    if document['format'] != 'pc-worksheet-final-values' or type(document['version']) is not int or document['version'] != 3:
+        raise CompareError('unsupported_version', 'Both inputs must be pc-worksheet-final-values version 3; '
+                                                  're-normalize older captures from their retained worksheet XML')
     require(isinstance(document['worksheets'], list) and bool(document['worksheets']), '$.worksheets', 'expected nonempty array')
     for index, worksheet in enumerate(document['worksheets']):
         path = '$.worksheets[{}]'.format(index)
@@ -152,23 +74,12 @@ def validate(document):
             shape(worksheet[field], set(), allowed, path + '.' + field)
             for name, value in worksheet[field].items():
                 string(value, path + '.' + field + '.' + name)
-        require(isinstance(worksheet['identifiers'], list), path, 'identifiers must be array')
-        seen = set()
-        for i, record in enumerate(worksheet['identifiers']):
-            rp = path + '.identifiers[{}]'.format(i)
-            shape(record, {'identifier', 'value'}, {'receiver'}, rp)
-            identifier(record['identifier'], rp + '.identifier')
-            identity = key(record['identifier'])
-            require(identity not in seen, rp, 'duplicate final structured identifier')
-            seen.add(identity)
-            final_value(record['value'], rp + '.value')
-            if 'receiver' in record:
-                require(record['identifier']['kind'] == 'property', rp, 'receiver requires property identifier')
-                receiver = record['receiver']
-                shape(receiver, {'type', 'value', 'opaque'}, set(), rp + '.receiver')
-                string(receiver['value'], rp + '.receiver.value')
-                require(receiver['type'] == record['identifier']['object']['type'] and receiver['opaque'] is True,
-                        rp, 'receiver type must equal property object type and opaque must be true')
+        require(isinstance(worksheet['identifiers'], dict), path + '.identifiers',
+                'expected an object of name to value; re-normalize this capture from its retained worksheet XML')
+        # JSON keys are strings; the reader already refused a name written twice.
+        for name, value in worksheet['identifiers'].items():
+            string(name, path + '.identifiers', True)
+            final_value(value, path + '.identifiers' + json.dumps([name], ensure_ascii=True))
     return document
 
 
@@ -195,7 +106,7 @@ def read_input(path):
         validate(document)
     except (ValueError, UnicodeError, RecursionError) as exc:
         raise CompareError('invalid_input', 'Invalid JSON/encoding/nesting: {}'.format(exc)) from exc
-    return document, {'sha256': hashlib.sha256(raw).hexdigest(), 'format': document['format'], 'version': 2,
+    return document, {'sha256': hashlib.sha256(raw).hexdigest(), 'format': document['format'], 'version': 3,
                       'worksheet_count': len(document['worksheets']),
                       'identifier_count': sum(len(w['identifiers']) for w in document['worksheets'])}
 
@@ -227,11 +138,6 @@ def presence(mapping, name):
     return {'present': True, 'value': mapping[name]} if name in mapping else {'present': False}
 
 
-def side_record(record):
-    # The change entry names the identifier once; each side keeps only what was recorded for it.
-    return None if record is None else {k: v for k, v in record.items() if k != 'identifier'}
-
-
 def compare_pair(left, right):
     context_changes = []
     for group in ('metadata', 'routine'):
@@ -239,25 +145,19 @@ def compare_pair(left, right):
             before, after = presence(left[group], field), presence(right[group], field)
             if before != after:
                 context_changes.append({'group': group, 'field': field, 'baseline': before, 'candidate': after})
-    a = {key(r['identifier']): r for r in left['identifiers']}
-    b = {key(r['identifier']): r for r in right['identifiers']}
+    a, b = left['identifiers'], right['identifiers']
     changes = []
-    for ident in sorted(set(a) | set(b)):
-        before, after = a.get(ident), b.get(ident)
+    for name in sorted(set(a) | set(b)):
+        # The change entry names the identifier once; each side holds only its recorded value.
+        before = {'value': a[name]} if name in a else None
+        after = {'value': b[name]} if name in b else None
         categories = []
         if before is None or after is None:
             categories.append('added' if before is None else 'removed')
-        else:
-            av, bv = before['value'], after['value']
-            if av['kind'] != bv['kind'] or key(av['value']) != key(bv['value']):
-                categories.append('value')
-            if av['kind'] != bv['kind'] or av['type'] != bv['type']:
-                categories.append('type')
-            if presence(before, 'receiver') != presence(after, 'receiver'):
-                categories.append('receiver')
+        elif key(before['value']) != key(after['value']):
+            categories.append('value')
         if categories:
-            changes.append({'identifier': (before or after)['identifier'], 'categories': categories,
-                            'baseline': side_record(before), 'candidate': side_record(after)})
+            changes.append({'name': name, 'categories': categories, 'baseline': before, 'candidate': after})
     return context_changes, changes, len(set(a) | set(b))
 
 
@@ -315,7 +215,7 @@ def compare(baseline, candidate, inputs):
                 reasons.append('partner_has_insufficient_identity')
             unresolved.append({'side': label, 'worksheet': worksheet_context(i, worksheet), 'reasons': reasons,
                                'unavailable_identity_fields': missing, 'possible_partner_indexes': possible})
-    return {'format': 'pc-worksheet-comparison', 'version': 2, 'policy': POLICY,
+    return {'format': 'pc-worksheet-comparison', 'version': 3, 'policy': POLICY,
             'outcome': 'incomplete' if unresolved else 'different' if changed_pairs else 'equal',
             'complete': not unresolved, 'inputs': inputs,
             'summary': {'established_pairs': len(pairs), 'changed_pairs': changed_pairs,
@@ -364,52 +264,13 @@ def where(worksheet):
     return ', '.join(parts)
 
 
-def part(name):
-    return '[' + name + ']' if '.' in name else name
-
-
-def atom_text(a):
-    if a['kind'] == 'function':
-        return a['class'] + '.' + a['name'] + '()'
-    if a['kind'] == 'method':
-        return a['object']['name'] + '.' + a['name'] + '()'
-    if a['kind'] == 'query':
-        return a['table'] + '[' + a['factor'] + ']' + ('@' + a['source'] if a['source'] else '')
-    return a['name']
-
-
-def identifier_text(ident):
-    if ident['kind'] == 'variable':
-        return ident['name']
-    if ident['kind'] == 'property':
-        return part(ident['object']['name']) + '.' + part(ident['name'])
-    return ' > '.join([atom_text(a) for a in ident['context']] + [atom_text(ident)])
-
-
 def cell(text):
     text, cut = short(text)
     return code(text, True) + (' (shortened)' if cut else ''), cut
 
 
-def value_cell(record, categories):
-    if record is None:
-        return '(absent)', False
-    value = record['value']
-    raw = value['value']
-    text = ('null' if raw is None else json.dumps(raw) if value['kind'] == 'boolean'
-            else raw if value['kind'] == 'number' else json.dumps(raw, ensure_ascii=False))
-    shown, cut = cell(text)
-    if value['kind'] == 'opaque':
-        shown += ' opaque'
-    if 'type' in categories:
-        shown += ' as ' + (code(value['type'], True) if value['type'] is not None else 'no type')
-    if 'receiver' in categories:
-        if 'receiver' in record:
-            receiver, more = cell(record['receiver']['value'])
-            shown, cut = shown + ', receiver ' + receiver, cut or more
-        else:
-            shown += ', no receiver'
-    return shown, cut
+def value_cell(record):
+    return ('(absent)', False) if record is None else cell(json.dumps(record['value'], ensure_ascii=False))
 
 
 def presence_cell(wrapper):
@@ -428,7 +289,7 @@ def render(result):
              '| Changed context fields | {} |'.format(s['changed_context_fields']),
              '| Unresolved worksheets, baseline / candidate | {} / {} |'.format(s['unresolved_baseline'], s['unresolved_candidate']),
              '',
-             'Identifier categories (one identifier can count in several): {}.'.format(
+             'Identifier categories: {}.'.format(
                  ', '.join('{} {}'.format(c, n) for c, n in s['identifier_categories'].items())),
              '']
     shortened = False
@@ -449,9 +310,9 @@ def render(result):
             lines.append('| {} | {} | {} | {} | context |'.format(
                 name, code(change['group'] + '.' + change['field'], True), before, after))
         for change in pair['identifier_changes']:
-            ident, cut0 = cell(identifier_text(change['identifier']))
-            before, cut1 = value_cell(change['baseline'], change['categories'])
-            after, cut2 = value_cell(change['candidate'], change['categories'])
+            ident, cut0 = cell(change['name'])
+            before, cut1 = value_cell(change['baseline'])
+            after, cut2 = value_cell(change['candidate'])
             shortened = shortened or cut0 or cut1 or cut2
             lines.append('| {} | {} | {} | {} | {} |'.format(name, ident, before, after, ', '.join(change['categories'])))
         lines.append('')
@@ -476,7 +337,7 @@ def render(result):
     text = dump(result)
     fence = '`' * max(3, 1 + max((len(m) for m in re.findall(r'`+', text)), default=0))
     lines += ['', '## Appendix: comparison JSON', '',
-              'The exact comparison result, including structured identifiers and input hashes.', '',
+              'The exact comparison result, including identifier names and input hashes.', '',
               fence + 'json', text.rstrip('\n'), fence]
     return '\n'.join(lines) + '\n'
 
@@ -594,8 +455,8 @@ def run(baseline, candidate, destination, overwrite=False, report=None):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--baseline', required=True, help='Baseline final-values v2 JSON')
-    parser.add_argument('--candidate', required=True, help='Candidate final-values v2 JSON')
+    parser.add_argument('--baseline', required=True, help='Baseline final-values v3 JSON')
+    parser.add_argument('--candidate', required=True, help='Candidate final-values v3 JSON')
     parser.add_argument('--output', required=True, help='Destination comparison JSON; parent must exist')
     parser.add_argument('--report', help='Also write a Markdown report here; parent must exist')
     parser.add_argument('--overwrite', action='store_true', help='Explicitly replace existing output and report')

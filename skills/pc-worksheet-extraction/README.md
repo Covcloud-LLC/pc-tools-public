@@ -6,8 +6,6 @@ supported target is the PC 10.2.3 SQL Server schema (SQL Server
 identifiers, dates, decimal precision and every worksheet. No normalization,
 redaction, rating generation or historical rating-run selection takes place.
 
-Example output format: the [synthetic worksheets XML](../../examples/synthetic/worksheets/README.md).
-
 ## Setup
 
 Use Python 3.8+ and `pymssql` 2.3 or later, below 3. The SQL Server driver is the

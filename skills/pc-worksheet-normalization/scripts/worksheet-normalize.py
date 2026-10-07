@@ -60,8 +60,12 @@ NUMERIC_TYPES = {
     'java.lang.Byte', 'java.lang.Short', 'java.lang.Integer', 'java.lang.Long',
     'java.lang.Float', 'java.lang.Double', 'java.math.BigInteger', 'java.math.BigDecimal',
 }
-STRING_TYPES = {'java.lang.String', 'java.lang.Character', 'char'}
 BOOLEAN_TYPES = {'boolean', 'java.lang.Boolean'}
+# PC marks its rounding calls by Type; their arguments hold no business input.
+ROUNDING = {('Function', 'Rounding'), ('InstanceMethod', 'CostDataRounding')}
+# A call, argument or query name says where it was written, so it is written once.
+ONCE = {'Function', 'Argument', 'RateQuery', 'QueryParam'}
+DEFAULT_OUTPUT = 'worksheets-normalized.json'
 NUMBER = re.compile(r'([+-]?)([0-9]*)(?:\.([0-9]*))?(?:[eE]([+-]?[0-9]+))?\Z')
 
 
@@ -96,21 +100,20 @@ def canonical_number(raw, path):
 
 
 def recorded_value(node, path):
+    """Plain JSON value: canonical number text, string, boolean, null, or recorded opaque text."""
     attr = 'Result' if node.tag in {'Store', 'PropertySet'} else 'Value'
     value_type = node.get(attr + 'Type')
     raw = node.get(attr)
     if raw is None:
-        return {'kind': 'null', 'type': value_type, 'value': None}
+        return None
     if value_type in NUMERIC_TYPES:
-        return {'kind': 'number', 'type': value_type, 'value': canonical_number(raw, path)}
+        return canonical_number(raw, path)
     if value_type in BOOLEAN_TYPES:
         if raw not in {'true', 'false'}:
             raise NormalizeError('unsupported_content', '{}: invalid typed boolean'.format(path))
-        return {'kind': 'boolean', 'type': value_type, 'value': raw == 'true'}
-    if value_type is None or value_type in STRING_TYPES:
-        return {'kind': 'string', 'type': value_type, 'value': raw}
-    # Typekeys and enum-like values also retain their exact serialized form.
-    return {'kind': 'opaque', 'type': value_type, 'value': raw, 'opaque': True}
+        return raw == 'true'
+    # Strings, typekeys and enum-like values keep their exact serialized form.
+    return raw
 
 
 def validate(node, path):
@@ -162,8 +165,32 @@ def validate(node, path):
         validate(child, child_path)
 
 
-def key(value):
-    return json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(',', ':'))
+PUNCTUATION = re.compile(r'[\s.\[\]()":=]')
+
+
+def segment(text, path):
+    """A name segment the grammar can show unambiguously."""
+    if not text or PUNCTUATION.search(text):
+        raise NormalizeError('unsupported_content', '{}: name segment {} is empty or contains whitespace or . [ ] ( ) " : ='.format(path, json.dumps(text)))
+    return text
+
+
+def quoted(text, path):
+    if "'" in text or '"' in text or '\\' in text:
+        raise NormalizeError('unsupported_content', '{}: factor name or source {} contains \' " or \\'.format(path, json.dumps(text)))
+    return "'" + text + "'"
+
+
+def operands(node):
+    return [c for c in node if c.tag in OPERANDS]
+
+
+def shared_functions(worksheet):
+    """Function names that two classes share in one worksheet."""
+    owners = {}
+    for node in worksheet.iter('Function'):
+        owners.setdefault(node.get('Name'), set()).add(node.get('ClassName'))
+    return {name for name, found in owners.items() if len(found) > 1}
 
 
 def normalize(root):
@@ -173,51 +200,87 @@ def normalize(root):
     if not len(root):
         raise NormalizeError('unsupported_content', 'Worksheets contains no Worksheet elements')
     worksheets = []
-    for worksheet in root:
-        final = {}
+    for index, worksheet in enumerate(root, 1):
+        final, types, classes, written = {}, {}, {}, {}
+        shared = shared_functions(worksheet)
 
-        def visit(node, context, path):
-            identifier = None
-            child_context = context
-            if node.tag in {'Store', 'Variable'}:
-                identifier = {'kind': 'variable', 'name': node.get('Variable' if node.tag == 'Store' else 'Name')}
-            elif node.tag in {'PropertySet', 'PropertyGet'}:
-                identifier = {'kind': 'property', 'name': node.get('PropertyName'),
-                              'object': {'name': node.get('ObjectName'), 'type': node.get('ObjectType')}}
-            elif node.tag in {'Function', 'InstanceMethod'}:
-                call = {'kind': 'function' if node.tag == 'Function' else 'method',
-                        'name': node.get('Name' if node.tag == 'Function' else 'FunctionName')}
+        def obj(node, path):
+            name, object_type = segment(node.get('ObjectName'), path), node.get('ObjectType')
+            if types.setdefault(name, object_type) != object_type:
+                raise NormalizeError('unsupported_content', '{}: object {} has types {} and {} in one worksheet'.format(path, name, types[name], object_type))
+            return name
+
+        def function(node, path):
+            name = segment(node.get('Name'), path)
+            if name not in shared:
+                return name
+            full = node.get('ClassName')
+            qualified = segment(full.rsplit('.', 1)[-1], path) + '.' + name
+            if classes.setdefault(qualified, full) != full:
+                raise NormalizeError('unsupported_content', '{}: classes {} and {} share the simple name and function {}'.format(path, classes[qualified], full, qualified))
+            return qualified
+
+        def visit(node, prefix, path, owned=False):
+            """prefix places a call: 'target := ', an enclosing argument 'call().arg.', or '' (bare).
+            owned: the node is the only operand of an assignment or argument that already holds its value."""
+            name, child_prefix = None, prefix
+            if (node.tag, node.get('Type')) in ROUNDING:
+                # The same name checks as any call, though only a kept result row shows a name.
                 if node.tag == 'Function':
-                    call['class'] = node.get('ClassName')
-                    identifier = dict(call, context=context)
+                    call = prefix + function(node, path) + '()'
                 else:
-                    call['object'] = {'name': node.get('ObjectName'), 'type': node.get('ObjectType')}
-                child_context = context + [call]
+                    obj(node, path)
+                    segment(node.get('FunctionName'), path)
+                # No argument rows: operands inside are operands of the enclosing assignment.
+                for i, argument in enumerate(node, 1):
+                    argument_path = '{}/Argument[{}]'.format(path, i)
+                    segment(argument.get('Name'), argument_path)
+                    sole = len(operands(argument)) == 1
+                    for j, child in enumerate(argument, 1):
+                        visit(child, prefix, '{}/{}[{}]'.format(argument_path, child.tag, j), sole)
+                if node.tag == 'Function' and not owned:
+                    record(call, node, path)
+                return
+            if node.tag in {'Store', 'Variable'}:
+                name = segment(node.get('Variable' if node.tag == 'Store' else 'Name'), path)
+                child_prefix = name + ' := '
+            elif node.tag in {'PropertySet', 'PropertyGet'}:
+                name = obj(node, path) + '.' + segment(node.get('PropertyName'), path)
+                child_prefix = name + ' := '
+            elif node.tag == 'Function':
+                call = prefix + function(node, path) + '()'
+                name = None if owned else call
+                child_prefix = call + '.'
+            elif node.tag == 'InstanceMethod':
+                child_prefix = obj(node, path) + '.' + segment(node.get('FunctionName'), path) + '().'
             elif node.tag == 'RateQuery':
-                query = {'kind': 'query', 'table': node.get('TableCode'),
-                         'factor': node.get('FactorName'), 'source': node.get('FactorSource', '')}
-                identifier = dict(query, context=context)
-                child_context = context + [query]
+                factor = quoted(node.get('FactorName'), path)
+                if node.get('FactorSource'):
+                    factor += ', ' + quoted(node.get('FactorSource'), path)
+                name = segment(node.get('TableCode'), path) + '[' + factor + ']'
+                child_prefix = name + '.'
             elif node.tag in {'Argument', 'QueryParam'}:
-                identifier = {'kind': 'argument' if node.tag == 'Argument' else 'parameter',
-                              'name': node.get('Name'), 'context': context}
-                # Nested calls under different named inputs have different owners.
-                child_context = context + [{'kind': identifier['kind'], 'name': identifier['name']}]
+                name = prefix + segment(node.get('Name'), path)
+                child_prefix = name + '.'
+            # An assignment's or argument's only operand is the value it already holds.
+            sole = node.tag in {'Store', 'PropertySet', 'Argument'} and len(operands(node)) == 1
             for i, child in enumerate(node, 1):
-                visit(child, child_context, '{}/{}[{}]'.format(path, child.tag, i))
-            if identifier is not None:
-                record = {'identifier': identifier, 'value': recorded_value(node, path)}
-                # Receiver displays are not property values or identifier identity.
-                # Keep the last occurrence's recorded representation without parsing it.
-                if node.tag == 'PropertyGet' and 'ObjectValue' in node.attrib:
-                    record['receiver'] = {'type': node.get('ObjectType'), 'value': node.get('ObjectValue'), 'opaque': True}
-                final[key(identifier)] = record
+                visit(child, child_prefix, '{}/{}[{}]'.format(path, child.tag, i), sole)
+            if name is not None:
+                record(name, node, path)
 
-        visit(worksheet[0], [], '/Worksheet/Routine')
+        def record(name, node, path):
+            # Post-order: an assignment's result follows the reads it was computed from.
+            if name in written and (node.tag in ONCE or written[name][0] in ONCE):
+                raise NormalizeError('unsupported_content', '{} and {}: both write {}'.format(written[name][1], path, name))
+            written[name] = (node.tag, path)
+            final[name] = recorded_value(node, path)
+
+        visit(worksheet[0], '', '/Worksheets/Worksheet[{}]/Routine[1]'.format(index))
         worksheets.append({'metadata': dict(worksheet.attrib),
                            'routine': dict(worksheet[0].attrib),
-                           'identifiers': [final[k] for k in sorted(final)]})
-    return {'format': 'pc-worksheet-final-values', 'version': 2, 'worksheets': worksheets}
+                           'identifiers': {n: final[n] for n in sorted(final)}})
+    return {'format': 'pc-worksheet-final-values', 'version': 3, 'worksheets': worksheets}
 
 
 class SafeTreeBuilder(ET.TreeBuilder):
@@ -280,8 +343,10 @@ def local_path(value, label, category):
         raise NormalizeError(category, 'Cannot resolve {} path {!r}: {}; check the path and home directory'.format(label, str(value), exc)) from exc
 
 
-def convert(source, destination, overwrite=False):
+def convert(source, destination=None, overwrite=False):
     source, source_resolved = local_path(source, 'input', 'input_read')
+    if destination is None:
+        destination = source.parent / DEFAULT_OUTPUT
     destination, destination_resolved = local_path(destination, 'output', 'output_write')
     # Refuse aliases, including symlinks and hard links, even with --overwrite.
     try:
@@ -305,7 +370,7 @@ def convert(source, destination, overwrite=False):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--input', required=True, help='Local Worksheets XML file')
-    parser.add_argument('--output', required=True, help='Destination JSON file; parent must exist')
+    parser.add_argument('--output', help='Destination JSON file; parent must exist (default: {} beside the input)'.format(DEFAULT_OUTPUT))
     parser.add_argument('--overwrite', action='store_true', help='Explicitly replace an existing destination')
     args = parser.parse_args()
     try:
