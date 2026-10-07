@@ -1,6 +1,6 @@
 # Compare two retained worksheet captures
 
-Compare these two `pc-worksheet-final-values` version 2 JSON files and write the
+Compare these two `pc-worksheet-final-values` version 3 JSON files and write the
 comparison JSON and Markdown report:
 
 - Baseline: `<baseline path>`

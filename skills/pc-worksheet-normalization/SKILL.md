@@ -8,13 +8,14 @@ description: Convert local PC worksheets XML into comparable JSON containing fin
 [README.md](README.md) holds the supported XML, the JSON contract and the failure
 remedies.
 
-1. Get the XML path and the JSON destination from the request; ask only for what
-   is missing.
+1. Get the XML path from the request. Without a destination, the JSON goes to
+   `worksheets-normalized.json` beside the XML; pass `--output <path>` only when
+   the user names another destination.
 2. Run the script from this skill's directory, wherever it is installed:
 
    ```sh
    python3 /path/to/pc-worksheet-normalization/scripts/worksheet-normalize.py \
-     --input <worksheets.xml> --output <worksheets.json>
+     --input <worksheets.xml>
    ```
 
    Add `--overwrite` only when the user asks to replace the destination. Do not

@@ -1,7 +1,7 @@
 # Worksheet comparison
 
 Compare two retained PC rating captures of the same job and quote
-branch. Inputs are `pc-worksheet-final-values` version 2 JSON from the
+branch. Inputs are `pc-worksheet-final-values` version 3 JSON from the
 normalization bundle. The run writes comparison JSON and, with `--report`, a
 Markdown report for rating analysts and PC developers. Python 3.8+
 standard library only; copy the bundle anywhere and run it from any directory.
@@ -11,8 +11,6 @@ python3 /path/to/pc-worksheet-comparison/scripts/worksheet-compare.py \
   --baseline /path/to/baseline.json --candidate /path/to/candidate.json \
   --output /path/to/comparison.json --report /path/to/report.md
 ```
-
-Examples: [synthetic cases](../../examples/synthetic/worksheets/README.md), each with its `comparison.json` and `report.md`.
 
 ## Status and files
 
@@ -41,29 +39,24 @@ print JSON with `status`, `category` and `message` on stderr. Categories:
 
 ## Valid inputs
 
-The root has exactly `format`, integer `version: 2` and a nonempty `worksheets`
-array. Version 1, mixed versions and other envelopes fail. Unknown fields,
-duplicate JSON keys, duplicate identifiers in a worksheet, non-JSON numbers,
-invalid UTF-8 or surrogates, and invalid shapes fail. Nothing is dropped or
-repaired. Worksheet and identifier order do not count as changes.
+The root has exactly `format`, integer `version: 3` and a nonempty `worksheets`
+array. Any other version, mixed versions and other envelopes fail with
+`unsupported_version`; re-normalize an older capture from its retained worksheet
+XML. Unknown fields, duplicate JSON keys (so a name written twice in a
+worksheet), non-JSON numbers, invalid UTF-8 or surrogates, and invalid shapes
+fail with `invalid_input`. Nothing is dropped or repaired. Worksheet and
+identifier order do not count as changes.
 
 Each worksheet has `metadata` (optional text `FixedId`, `Tag`, `EffectiveDate`,
 `ExpirationDate`, `Description`), `routine` (optional text `RateBookCode`,
 `RateBookEdition`, `RoutineCode`, `RoutineVersion`) and `identifiers`. Missing
-metadata is valid but can prevent pairing. Identifiers follow the normalization
-grammar (variable, property, function, query, argument, parameter with structured
-context). Values have `kind`, `type` and `value`:
-
-| Kind | Value |
-|---|---|
-| `number` | Canonical decimal string for a numeric type; no exponent, sign `+`, leading zeros, `-0` or trailing fractional zeros; at most 100,000 digits. |
-| `boolean` | JSON boolean with a boolean type. |
-| `string` | Text with no type or a String/Character/char type. |
-| `null` | JSON null with any recorded type. Different from an absent identifier. |
-| `opaque` | Text with a non-scalar type and `opaque: true`. |
-
-A property may carry `receiver: {type, value, opaque: true}`, whose `type` equals
-the property's object type. No float conversion, tolerance, coercion or object
+metadata is valid but can prevent pairing. `identifiers` is an object of name
+to value: each key is a nonempty name written by the normalization grammar
+(`cp_deduct['Factor']`), and each value is a string, a boolean or null. An
+`identifiers` array of `{name, value}` records fails with `invalid_input`;
+re-normalize that capture from its retained worksheet XML. Numbers arrive as
+canonical decimal strings. Null is different from an
+absent identifier. No float conversion, tolerance, coercion or object
 reconstruction is done.
 
 ## Pairing worksheets
@@ -80,12 +73,12 @@ and it blocks any pair it competes with; known conflicting fields keep unrelated
 pairs intact. Unpaired worksheets are reported as unresolved with their possible
 partners. They are not treated as additions, removals, splits or merges.
 
-Within a pair, identifiers match on their full structured identity. Description,
-rate book and routine version are compared after pairing.
+Within a pair, identifiers match on their exact name. Description, rate book and
+routine version are compared after pairing.
 
-## Comparison JSON (version 2)
+## Comparison JSON (version 3)
 
-Root: `format: pc-worksheet-comparison`, `version: 2`, `policy`, `outcome`,
+Root: `format: pc-worksheet-comparison`, `version: 3`, `policy`, `outcome`,
 `complete`, `inputs`, `summary`, `pairs`, `unresolved`, `limits`. It holds
 changes, not copies of unchanged identifiers; those stay in the inputs.
 
@@ -96,16 +89,17 @@ changes, not copies of unchanged identifiers; those stay in the inputs.
   A `different` pair adds:
   - `context_changes[]`: `group` (`metadata` or `routine`), `field`, and
     `baseline`/`candidate` as `{present: false}` or `{present: true, value}`.
-  - `identifier_changes[]`: `identifier`, `categories`, and `baseline`/`candidate`
-    as `{value, receiver?}`, or `null` when the identifier is absent on that side.
+  - `identifier_changes[]`: `name`, `categories`, and `baseline`/`candidate`
+    as `{value}`, or `null` when the identifier is absent on that side.
 - `unresolved[]`: `side`, `worksheet` (`index`, `metadata`, `routine`),
   `reasons`, `unavailable_identity_fields`, `possible_partner_indexes`.
 
-Identifier categories (one identifier can count in several):
+Each changed identifier has one category:
 
-- `value`: kind or recorded value changed, including opaque text.
-- `type`: kind or recorded type changed.
-- `receiver`: receiver presence or text changed.
+- `value`: the JSON value changed. Strings compare exactly, so `"0.0992"` and
+  `"0.09918"` differ; a string and a boolean or null differ. A number and a
+  string with the same text are equal, as are numbers recorded with different
+  Java types.
 - `added` / `removed`: the identifier is present on one side only.
 
 `summary` counts `established_pairs`, `changed_pairs`, `compared_identifiers`
@@ -125,6 +119,6 @@ holding the exact comparison JSON. Indexes are zero-based positions in each inpu
 
 Source text is shown in code spans with JSON escapes, so Markdown, HTML, control
 and direction characters in values cannot change the report. Identifiers are
-shown in a short readable form; the appendix holds the structured identity. A
-cell longer than 60 characters is cut and marked `(shortened)`. The report infers
+shown by name and values as JSON (`"992"`, `true`, `null`). A cell longer than
+60 characters is cut and marked `(shortened)`. The report infers
 no premium totals, business impact or object changes.
