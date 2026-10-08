@@ -42,12 +42,14 @@ print JSON with `status`, `category` and `message` on stderr. Categories:
 The root has exactly `format`, integer `version: 3` and a nonempty `worksheets`
 array. Any other version, mixed versions and other envelopes fail with
 `unsupported_version`; re-normalize an older capture from its retained worksheet
-XML. Unknown fields, duplicate JSON keys (so a name written twice in a
-worksheet), non-JSON numbers, invalid UTF-8 or surrogates, and invalid shapes
+XML. Unknown fields, duplicate JSON keys (so a name written twice in one
+entry), non-JSON numbers, invalid UTF-8 or surrogates, and invalid shapes
 fail with `invalid_input`. Nothing is dropped or repaired. Worksheet and
 identifier order do not count as changes.
 
-Each worksheet has `metadata` (optional text `FixedId`, `Tag`, `EffectiveDate`,
+Each `worksheets` entry is one routine of one PC worksheet; a worksheet
+with several routines gives several entries with the same `metadata`. An entry
+has `metadata` (optional text `FixedId`, `Tag`, `EffectiveDate`,
 `ExpirationDate`, `Description`), `routine` (optional text `RateBookCode`,
 `RateBookEdition`, `RoutineCode`, `RoutineVersion`) and `identifiers`. Missing
 metadata is valid but can prevent pairing. `identifiers` is an object of name
