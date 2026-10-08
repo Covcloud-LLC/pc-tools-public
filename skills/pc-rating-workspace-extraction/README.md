@@ -3,8 +3,9 @@
 Writes one PC line's **rating workspace**: the objects its calc routines take as input
 and write as output. For each object it records what backs it (an entity, a wrapper over an
 entity, a rating DTO, a class, or the generic cost data wrapper), where it sits under the line
-object in the data model, and each property a routine reads or writes, with its declared type and
-the file and line that declare it.
+object in the data model, and each property a routine reads or writes, with its declared type, the
+file and line that declare it, and its `source`: the PC field the property stands for, in
+the PAS Binding's words.
 
 One mechanical pass: no decisions file and no human gate. What the inputs do not establish is
 listed under `unresolved` for normalization to settle. `scripts/rating-workspace-extract.py` is
@@ -64,9 +65,9 @@ objects[]       key, kind (entity | wrapper | dto | gosuClass | costData), class
                 subtype {entity, coveragePatterns, at} or null,
                 parent (object key, null for the root), parentVia {kind, field, at} or null,
                 parameters [{book, parameterSet, parameter, paramType}],
-                properties [{path, type, typeFrom {kind, at}, exportTypes, modifier, covTerm,
+                properties [{path, type, typeFrom {kind, at}, exportTypes, modifier, source,
                              readBy, writtenBy}]
-scalars[]       {book, parameterSet, parameter, type, routines}
+scalars[]       {book, parameterSet, parameter, type, routines, source {kind: scalar}}
 unresolved[]    {subject, reason, at[]}
 ```
 
@@ -133,4 +134,23 @@ A path's type is found by walking its segments from the object's backing class:
 5. Otherwise `type` and `typeFrom` are null and `unresolved` holds `property:<key>.<path>`.
 
 `exportTypes` lists every type the export recorded for the path. `modifier` is true when any read
-is a modifier read. `covTerm` holds the cov term code a step named for the path.
+is a modifier read.
+
+### Source
+
+`source` names the PC field a property stands for, in the vocabulary of a PAS Binding
+row, so a reader can join the workspace to the line's Common Product without guessing. Its `kind`
+comes from the declaration that ends the type walk (the last segment):
+
+| `kind` | Fields | When |
+| --- | --- | --- |
+| `entityField` | `entityType`, `field` | An entity member: `entityType` is the entity that declares it (`entity.PersonalVehicle`, or `entity.PolicyLocation` at the end of the foreign-key walk `CPLocation.Location.FireProtectClass`). A `<field>_amt` path names the MonetaryAmount column `<field>`: `vehicle.CostNew_amt` is `entity.PersonalVehicle` `CostNew`, while its `type` stays null and its `unresolved` entry stays. |
+| `covTerm` | `clausePattern`, `codeIdentifier` | A `<code>Term` or `<code>Term.Value` path, or a path a step names a cov term code for. The clause pattern is the one captured coverage pattern that declares the term, among the object's narrowed patterns when one of them does. |
+| `gosuProperty` | `at`, `reads[]` | A wrapper or class property: `at` is the declaration. `reads` holds one entry per `case` or `return` in the getter body, each `{when, kind, …, at}` in this same vocabulary: `when` is the `case` label (absent outside a case), `at` the return line. A literal return reads nothing; a `var ... as` property has no reads. The CP coverage wrapper's `Limit` reads `CPBPPCov`/`CPBPPCovLimit` and `CPBldgCov`/`CPBldgCovLimit` (`CPCoverageWrapper.gs:27-36`). |
+| `enhancement` | none | The last segment is declared by an enhancement (`.gsx`), even at the end of a foreign-key walk (`vehicle.GarageLocation.PostalCode`). |
+| `modifierPattern` | `codeIdentifier` | A modifier read whose first segment is a modifier pattern. |
+| `costData` | none | A property of the `costdata` object. |
+| `unresolved` | none | The inputs do not establish the field, as for a property with no declaration, or a cov term no single clause pattern declares. |
+
+Every `scalars[]` entry has `source: {kind: scalar}`. The source never changes `type`, `typeFrom`
+or an `unresolved` entry.

@@ -3649,29 +3649,77 @@ class RatingExtractor:
                 if not param or param == "costdata" or not value:
                     continue
                 typed = None
+                declared = params.get(param, {})
                 if holder.get("inScopeValueIsModifier") is True:
-                    typed = OrderedDict([("modifierPattern", value)])
+                    typed = [OrderedDict([("modifierPattern", value)])]
                 elif holder.get("covTermCode"):
-                    clause = self.settle_term_clause(params.get(param, {}), holder["covTermCode"])
+                    clause = self.settle_term_clause(declared, holder["covTermCode"])
                     if clause:
-                        typed = OrderedDict([("clausePattern", clause), ("covTermPattern", holder["covTermCode"])])
+                        typed = [OrderedDict([("clausePattern", clause), ("covTermPattern", holder["covTermCode"])])]
                 else:
                     binding = bindings.get(param)
                     if binding and binding.get("kind") == "entity" and "." not in value:
-                        typed = OrderedDict([("entity", binding["type"]), ("property", value)])
+                        if declared.get("useWrapper") is True and declared.get("wrapperClass"):
+                            # A wrapper property is what its getter reads, never a property of the wrapped entity.
+                            typed = self.wrapper_reads(declared["wrapperClass"], value, binding["type"])
+                        else:
+                            typed = [OrderedDict([("entity", binding["type"]), ("property", value)])]
                 if typed is None:
                     what = "%s.%s" % (param, value)
                     if what not in untyped:
                         untyped.add(what)
-                        self.ratebook_joins["untyped"].append((code, "%s step %d reads `%s`, which the parameter set and binds do not type as an entity property, a modifier or a captured coverage term" % (routine_ref_path, step["order"], what)))
+                        self.ratebook_joins["untyped"].append((code, "%s step %d reads `%s`, which the parameter set and binds do not type as an entity property, a modifier, a captured coverage term or a wrapper getter's reads" % (routine_ref_path, step["order"], what)))
                     continue
-                identity = tuple(typed.items())
-                if identity in seen:
-                    continue
-                seen.add(identity)
-                typed["at"] = "%s#step %d" % (routine_ref_path, step["order"])
-                reads.append(typed)
+                for row in typed:
+                    identity = tuple(row.items())
+                    if identity in seen:
+                        continue
+                    seen.add(identity)
+                    row["at"] = "%s#step %d" % (routine_ref_path, step["order"])
+                    reads.append(row)
         return reads
+
+    def wrapper_reads(self, wrapper_class, name, entity):
+        """What a wrapper class's `property get <name>()` reads, one row per `case`/return: a
+        returned `<field>.<Code>Term...` is the coverage term {clausePattern, covTermPattern}, the
+        clause being the case's pattern when it declares the term, else the one captured clause
+        that does; a returned `<field>.<Property>` is that property of the bound entity. Literal
+        returns read nothing, so a getter that returns only literals reads []. None when the getter is
+        absent or any return is something else."""
+        path = self.class_index.get(last_segment(wrapper_class))
+        if not path:
+            return None
+        text = read_text(path)
+        fields = set(re.findall(r"^\s*(?:(?:private|protected|public|internal|static)\s+)*var\s+(\w+)\s*:", structural_text(text), re.M))
+        blocks = [b for b in method_blocks(text) if b["kind"] == "property" and b["name"] == name]
+        if len(blocks) != 1:
+            return None
+        rows, when = [], None
+        for line in blank_comments(blocks[0]["body"]).split("\n"):
+            case = re.match(r"\s*case\s+(\w+)\s*:", line)
+            if case:
+                when = case.group(1)
+            elif re.match(r"\s*default\s*:", line):
+                when = None
+            for match in re.finditer(r"\breturn\s+([^;\n]+)", line):
+                expression = match.group(1).strip()
+                if re.match(r"^(true|false|null|-?\d[\d.]*|\"[^\"]*\")$", expression):
+                    continue
+                term = re.match(r"^(\w+)\.(\w+)Term(?:\.\w+)*$", expression)
+                plain = re.match(r"^(\w+)\.(\w+)$", expression)
+                if term and term.group(1) in fields:
+                    clause = (self.settle_term_clause({"coveragePattern": when}, term.group(2)) if when in self.pm["clauses"] else None) \
+                        or self.settle_term_clause({}, term.group(2))
+                    if not clause:
+                        return None
+                    row = OrderedDict([("clausePattern", clause), ("covTermPattern", term.group(2))])
+                elif plain and plain.group(1) in fields:
+                    row = OrderedDict([("entity", entity), ("property", plain.group(2))])
+                else:
+                    return None
+                if row not in rows:
+                    rows.append(row)
+        return rows
 
     def settle_term_clause(self, parameter, term_code):
         """The captured clause pattern that owns a cov term: the parameter's coveragePattern when it

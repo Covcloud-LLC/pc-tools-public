@@ -20,6 +20,16 @@ read. They share one product root per line: each writes under its
 | Rating workspace | [`pc-rating-workspace-extraction`](skills/pc-rating-workspace-extraction/README.md) | The product capture, the ratebook folders and the checkout | `rating-workspace.json` |
 | Rating process | [`pc-rating-process-extraction`](skills/pc-rating-process-extraction/README.md) | The checkout, the product capture and the ratebook folders | `rating-process-<EngineClass>.json`, one per rating engine |
 
+## Rating access report
+
+[`pc-rating-access-report`](skills/pc-rating-access-report/README.md) collects, for one line,
+what a mutation-safety reading of its rating needs: it runs the four extraction skills above
+into one product root, then writes `RATING-ACCESS-REPORT-<Line>.md` and
+`extracted/rating-access.json` from their outputs: every object the engines and calc routines
+touch with its backing, every write with its actor and target, every entity-backed read
+including lookup arguments, each engine's routine parameter bindings, the unresolved calls,
+and headed manual sections for what no tool captures, to fill from the checkout.
+
 ## Worksheet pipeline
 
 The three skills form one pipeline for comparing two rating runs of the same job

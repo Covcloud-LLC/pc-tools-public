@@ -168,6 +168,10 @@ class GosuClass:
             extends = re.search(r"\bextends\s+([\w.]+)", header.group(3))
             if extends:
                 self.extends = extends.group(1)
+        self.fields = {}
+        for name, field_type in re.findall(r"^\s*(?:(?:private|protected|public|internal|static)\s+)*var\s+(\w+)\s*:\s*([\w.]+)",
+                                           code, re.M):
+            self.fields.setdefault(name, field_type)
         self.members = {}
         for number, line in enumerate(code.split("\n"), 1):
             prop = re.search(r"\bproperty\s+get\s+(\w+)\s*\(\s*\)\s*:\s*([^{]+?)\s*(?:\{.*)?$", line)
@@ -180,6 +184,26 @@ class GosuClass:
 
     def at(self, line):
         return "%s:%d" % (self.location, line)
+
+    def getter_body(self, name):
+        """(first line, body text) of `property get Name()`, brace-matched; None for a property a
+        `var ... as Name` declares or a getter with no body."""
+        match = re.search(r"\bproperty\s+get\s+%s\s*\(\s*\)" % re.escape(name), self.code)
+        if not match:
+            return None
+        start = self.code.find("{", match.end())
+        if start < 0:
+            return None
+        depth, end = 0, start
+        while end < len(self.code):
+            if self.code[end] == "{":
+                depth += 1
+            elif self.code[end] == "}":
+                depth -= 1
+                if depth == 0:
+                    break
+            end += 1
+        return self.code.count("\n", 0, start) + 1, self.code[start:end + 1]
 
 
 class Checkout:
@@ -317,15 +341,19 @@ class Capture:
                             (name, child["attributes"].get("name", ""), node_at(child)))
         self.patterns = {}
         self.terms = {}
+        self.term_clauses = {}
         for clause in data["policyLinePattern"].get("clauses", []):
             if clause.get("kind") != "CoveragePattern":
                 continue
-            self.patterns[clause["attributes"].get("codeIdentifier", "")] = clause
+            clause_code = clause["attributes"].get("codeIdentifier", "")
+            self.patterns[clause_code] = clause
             for group in clause.get("children", []):
                 for term in group.get("children", []):
                     code = term.get("attributes", {}).get("codeIdentifier")
                     if code and term.get("kind", "").endswith("CovTermPattern"):
                         self.terms.setdefault(code, []).append(term)
+                        if clause_code not in self.term_clauses.setdefault(code, []):
+                            self.term_clauses[code].append(clause_code)
         self.modifiers = {}
         for group in line.get("children", []):
             if group.get("kind") == "ModifierPatterns":
@@ -393,8 +421,9 @@ class Resolver:
         return kind, None
 
     def entity_member(self, entity, name):
-        """(type, typeFrom, next) for a property of an entity, its supertypes and delegates: the
-        capture or the checkout's entity metadata first, then enhancements. None when undeclared."""
+        """(type, typeFrom, next, source) for a property of an entity, its supertypes and delegates:
+        the capture or the checkout's entity metadata first, then enhancements. `source` names the
+        declaring entity and column, with the member kind, or kind enhancement. None when undeclared."""
         order, queue, seen = [], [entity], set()
         while queue:
             current = queue.pop(0)
@@ -408,7 +437,8 @@ class Resolver:
                     for child in declaration.get("children", []):
                         if child.get("kind") in MEMBER_KINDS and child["attributes"].get("name") == name:
                             found_type, nxt = self.member_type(child["kind"], child["attributes"])
-                            return found_type, {"kind": "capture", "at": node_at(child)}, nxt
+                            return (found_type, {"kind": "capture", "at": node_at(child)}, nxt,
+                                    self.field_source(current, name, child["kind"]))
             else:
                 for path, node in declarations:
                     for child in node.get("children", []):
@@ -416,15 +446,20 @@ class Resolver:
                         if tag in MEMBER_KINDS and child["attrs"].get("name") == name:
                             found_type, nxt = self.member_type(tag, child["attrs"])
                             at = "%s:%d" % (self.checkout.rel(path), child["line"])
-                            return found_type, {"kind": "checkout", "at": at}, nxt
+                            return found_type, {"kind": "checkout", "at": at}, nxt, self.field_source(current, name, tag)
             queue.extend(self.entity_parents(source, declarations))
         for current in order:
             for enhancement in self.checkout.enhancements(current):
                 if name in enhancement.members:
                     found_type, line = enhancement.members[name]
                     return (found_type, {"kind": "checkout", "at": enhancement.at(line)},
-                            self.type_target(found_type, enhancement))
+                            self.type_target(found_type, enhancement), {"kind": "enhancement"})
         return None
+
+    @staticmethod
+    def field_source(entity, name, member_kind):
+        """An entity member in the PAS Binding's words; the member kind stays private to the walk."""
+        return {"kind": "entityField", "entityType": "entity." + entity, "field": name, "_member": member_kind}
 
     def type_target(self, type_name, context):
         """What a declared type names, for walking further: ('entity', name), ('class', fqn) or None."""
@@ -470,14 +505,16 @@ class Resolver:
         return chain, missing
 
     def class_member(self, fqn, name):
+        """(type, typeFrom, next, missing, declaring class) for a property of a PC class or the
+        classes it extends."""
         chain, missing = self.class_chain(fqn)
         for klass in chain:
             if name in klass.members:
                 found_type, line = klass.members[name]
                 if klass.kind == "platformJar":
                     self.checkout.jar_used = True
-                return found_type, {"kind": klass.kind, "at": klass.at(line)}, self.type_target(found_type, klass), None
-        return None, None, None, missing
+                return found_type, {"kind": klass.kind, "at": klass.at(line)}, self.type_target(found_type, klass), None, klass
+        return None, None, None, missing, None
 
     def collection_element(self, type_name, context):
         match = (re.match(r"^(?:java\.util\.)?(?:List|Set|Collection|ArrayList)\s*<\s*([\w.]+)\s*>$", type_name)
@@ -491,6 +528,14 @@ class Resolver:
 # ----------------------------------------------------------------------------------------------
 # The extraction
 # ----------------------------------------------------------------------------------------------
+
+
+def public_source(source):
+    """A source without the walk's private keys, its own and its reads'."""
+    clean = {k: v for k, v in source.items() if not k.startswith("_")}
+    if "reads" in clean:
+        clean["reads"] = [public_source(read) for read in clean["reads"]]
+    return clean
 
 
 def classify(parameter):
@@ -966,42 +1011,114 @@ class Extraction:
     # -- properties --------------------------------------------------------------------------
 
     def resolve(self, obj, path, use):
-        """(type, typeFrom) for a path on an object, or (None, reason)."""
-        segments = path.split(".")
-        current = ("entity", self.backing_entity(obj)) if obj["kind"] == "entity" else ("class", obj["className"])
-        result = None
+        """(type, typeFrom, source) for a path on an object, or (None, reason, source). `source` is
+        the PC field the path stands for; it never changes the type or reason."""
+        start = ("entity", self.backing_entity(obj)) if obj["kind"] == "entity" else ("class", obj["className"])
+        narrowed = (obj["subtype"] or {}).get("coveragePatterns") or []
+        type_name, type_from, source = self.walk(start, path.split("."), use["modifier"], narrowed, path)
+        if use["covTerm"] and source.get("kind") != "covTerm":
+            source = self.term_source(use["covTerm"], narrowed)
+        if obj["kind"] == "costData":
+            source = {"kind": "costData"}
+        return type_name, type_from, source
+
+    def walk(self, current, segments, modifier, narrowed, path, getters=True):
+        """(type, typeFrom, source) for property segments walked from `current`, an ('entity', name)
+        or ('class', fqn); (None, reason, source) when the inputs do not declare a segment. The
+        source is the declaration of the last segment."""
+        result, source = None, None
         for index, segment in enumerate(segments):
+            last = index == len(segments) - 1
             if current is None:
-                return None, "%s does not resolve past %s" % (path, ".".join(segments[:index]))
-            if index == 0 and use["modifier"] and segment in self.capture.modifiers:
-                modifier = self.capture.modifiers[segment]
-                result = (modifier["attributes"].get("modifierDataType", ""),
-                          {"kind": "capture", "at": node_at(modifier)}, None)
+                return None, "%s does not resolve past %s" % (path, ".".join(segments[:index])), {"kind": "unresolved"}
+            if index == 0 and modifier and segment in self.capture.modifiers:
+                modifier_node = self.capture.modifiers[segment]
+                result = (modifier_node["attributes"].get("modifierDataType", ""),
+                          {"kind": "capture", "at": node_at(modifier_node)}, None)
+                source = {"kind": "modifierPattern", "codeIdentifier": segment}
             elif segment.endswith("Term") and segment[:-4] in self.capture.terms:
-                return None, "cov term %s: its property type is generated from the product model (%s)" % (
-                    segment[:-4], node_at(self.capture.terms[segment[:-4]][0]))
+                return (None, "cov term %s: its property type is generated from the product model (%s)" % (
+                    segment[:-4], node_at(self.capture.terms[segment[:-4]][0])), self.term_source(segment[:-4], narrowed))
             elif current[0] == "entity":
-                result = self.resolver.entity_member(current[1], segment)
-                if result is None:
+                found = self.resolver.entity_member(current[1], segment)
+                if found is None:
+                    source = {"kind": "unresolved"}
+                    if last and segment.endswith("_amt"):
+                        # PC's amount column of a MonetaryAmount field <field> is <field>_amt.
+                        amount = self.resolver.entity_member(current[1], segment[:-4])
+                        if amount and amount[3].get("_member") == "monetaryamount":
+                            source = amount[3]
                     return None, "entity %s declares no %s in the capture, entity metadata or enhancements" % (
-                        current[1], segment)
+                        current[1], segment), source
+                result, source = found[:3], found[3]
             else:
-                found_type, type_from, nxt, missing = self.resolver.class_member(current[1], segment)
+                found_type, type_from, nxt, missing, klass = self.resolver.class_member(current[1], segment)
                 if found_type is None:
                     reason = "class %s declares no %s" % (current[1], segment)
                     if missing:
                         reason += "; %s is not in the inputs" % missing
-                    return None, reason
+                    return None, reason, {"kind": "unresolved"}
                 result = (found_type, type_from, nxt)
+                source = {"kind": "gosuProperty", "at": type_from["at"]}
+                if getters and last:
+                    source["reads"] = self.getter_reads(klass, segment)
             current = result[2]
-        return result[0], result[1]
+        return result[0], result[1], source
+
+    def term_source(self, code, narrowed):
+        """A cov term by its code: the one captured clause pattern that declares it, among the
+        patterns the object or the getter's case narrows to when any of them declares it."""
+        clauses = self.capture.term_clauses.get(code, [])
+        within = [c for c in clauses if c in narrowed]
+        clauses = within or clauses
+        if len(clauses) != 1:
+            return {"kind": "unresolved"}
+        return {"kind": "covTerm", "clausePattern": clauses[0], "codeIdentifier": code}
+
+    def getter_reads(self, klass, name):
+        """One read per `case`/return of a PC code property getter: what the returned expression reads
+        from one of the class's own fields, in the same source vocabulary, with the case it is under.
+        A literal return reads nothing; any other expression is a read of kind unresolved. A read of
+        another PC code property is kind gosuProperty, not followed further."""
+        found = klass.getter_body(name)
+        if found is None:
+            return []
+        first, body = found
+        reads, when = [], None
+        for offset, line in enumerate(body.split("\n")):
+            case = re.match(r"\s*case\s+(\w+)\s*:", line)
+            if case:
+                when = case.group(1)
+            elif re.match(r"\s*default\s*:", line):
+                when = None
+            for match in re.finditer(r"\breturn\s+([^;\n]+)", line):
+                expression = match.group(1).strip()
+                if re.match(r"^(true|false|null|-?\d[\d.]*|\"[^\"]*\")$", expression):
+                    continue
+                entry = {"when": when} if when else {}
+                entry.update(self.expression_source(klass, expression, when))
+                entry["at"] = klass.at(first + offset)
+                reads.append(entry)
+        return reads
+
+    def expression_source(self, klass, expression, when):
+        """The source a getter's `<field>.<path>` expression reads, walked from the field's type."""
+        match = re.match(r"^(\w+)((?:\.\w+)+)$", expression)
+        if not match or match.group(1) not in klass.fields:
+            return {"kind": "unresolved"}
+        target = self.resolver.type_target(klass.fields[match.group(1)], klass)
+        if target is None:
+            return {"kind": "unresolved"}
+        narrowed = [when] if when in self.capture.patterns else []
+        source = self.walk(target, match.group(2)[1:].split("."), False, narrowed, expression, getters=False)[2]
+        return {"kind": "gosuProperty"} if source["kind"] == "gosuProperty" else source
 
     def build_properties(self):
         for key, obj in self.objects.items():
             properties = []
             for path in sorted(obj["uses"]):
                 use = obj["uses"][path]
-                type_name, type_from = self.resolve(obj, path, use)
+                type_name, type_from, source = self.resolve(obj, path, use)
                 export_types = sorted(use["exportTypes"])
                 if type_name is None:
                     if len(export_types) == 1:
@@ -1012,9 +1129,10 @@ class Extraction:
                         type_from = None
                 properties.append({
                     "path": path, "type": type_name, "typeFrom": type_from, "exportTypes": export_types,
-                    "modifier": use["modifier"], "covTerm": use["covTerm"] or None,
+                    "modifier": use["modifier"], "source": public_source(source),
                     "readBy": sorted(use["readBy"]), "writtenBy": sorted(use["writtenBy"])})
             obj["properties"] = properties
+
 
     # -- document ----------------------------------------------------------------------------
 
@@ -1061,7 +1179,7 @@ class Extraction:
             "counts": {"objects": len(objects), "properties": sum(len(o["properties"]) for o in objects),
                        "scalars": len(self.scalars), "unresolved": len(unresolved)},
             "objects": objects,
-            "scalars": self.scalars,
+            "scalars": [dict(scalar, source={"kind": "scalar"}) for scalar in self.scalars],
             "unresolved": unresolved,
         }
 
