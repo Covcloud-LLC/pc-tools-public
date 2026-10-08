@@ -115,7 +115,7 @@ The open questions always include the items the script cannot decide:
   stale folder, never the document);
 - a bound routine's **parameter mismatch** (a bind the parameter set does not declare, or a
   declared parameter with no bind) and any in-scope value it reads that the script could not
-  type;
+  type (a wrapper property is typed as the coverage terms its getter reads, one per `case`);
 - a **bind** whose value origin is an expression the script could not follow to a call result,
   an engine member, a loop variable, a literal or a method parameter;
 - a **loop's collection** when it holds neither a captured entity nor a gsrc class, and a **switch

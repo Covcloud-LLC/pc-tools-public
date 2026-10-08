@@ -247,7 +247,15 @@ resolves), `status` (only from the decisions file), `at`. A dimension is in `key
     a parameter other than `costdata`. `inScopeValueIsModifier: true` gives `{modifierPattern}`. A
     `covTermCode` gives `{clausePattern, covTermPattern}` when the capture settles the clause (the
     parameter's `coveragePattern`, else the one captured clause declaring the term). A property of a
-    parameter whose bind resolved to a captured entity gives `{entity, property}`. Each `at` is the
+    parameter whose bind resolved to a captured entity gives `{entity, property}`. When that
+    parameter is a wrapper (`useWrapper` with a `wrapperClass`), the read is what the wrapper's
+    `property get` returns, one row per `case` or `return`: a `<field>.<Code>Term...` return is
+    `{clausePattern, covTermPattern}` (the clause is the `case` pattern when it declares the term,
+    else the one captured clause that does), a `<field>.<Property>` return is `{entity, property}`
+    on the bound entity, and a literal return reads nothing. It is never an `{entity, property}` row
+    naming the wrapped entity for the wrapper's own property: CPLine `cp_cov_premium_rr` reads
+    `coverage.Limit` as `CPBPPCov`/`CPBPPCovLimit` and `CPBldgCov`/`CPBldgCovLimit`
+    (`CPCoverageWrapper.gs:27-36`). A getter with any other return is an open question. Each `at` is the
     routine JSON relative to the product root plus `#step <order>` of the first step holding it. A
     bare parameter with no value is not a read; its bind already records it. Anything else is an
     open question. Consultant reads are appended after them.

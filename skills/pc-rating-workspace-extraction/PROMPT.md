@@ -21,5 +21,6 @@ or the output, or write types yourself.
 Exit 0 is success: the script prints the saved path, the counts, and every unresolved subject with
 its reason and first locator. Tell me the path and counts, and summarize the unresolved subjects by
 kind (`object:`, `property:`, `argumentSources:`); they are for normalization to settle, not
-errors. Exit 2 is a refusal: tell me the error and the README's matching cause. A fix comes from
+errors. Each property's `source` names the PC field it stands for; say how many are
+`unresolved`, and for a wrapper property list the coverage terms its getter reads. Exit 2 is a refusal: tell me the error and the README's matching cause. A fix comes from
 the inputs and a rerun, never from editing a file.
