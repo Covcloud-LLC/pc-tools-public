@@ -20,6 +20,7 @@ remedies.
 
    Add `--overwrite` only when the user asks to replace the destination. Do not
    edit the XML or write values yourself to get past a failure.
-3. Success is exit 0 with `status: ok`: return the saved path, the worksheet and
-   identifier counts, and any `warnings`. Otherwise report the error category and
+3. Success is exit 0 with `status: ok`: return the saved path, the entry count
+   (`worksheet_count`, one entry per routine), the identifier count, and any
+   `warnings`. Otherwise report the error category and
    the README's remedy.

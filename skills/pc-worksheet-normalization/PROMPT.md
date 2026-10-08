@@ -14,6 +14,7 @@ This writes `worksheets-normalized.json` beside the XML. If I name another
 destination, add `--output <JSON-destination>`. Quote the paths. Add `--overwrite` only if I ask to replace the destination. Do
 not edit the XML or write values yourself.
 
-Only exit 0 with `status: ok` is success: tell me the saved path, the worksheet
-and identifier counts, and any `warnings`. On failure, tell me the error category
+Only exit 0 with `status: ok` is success: tell me the saved path, the entry
+count (`worksheet_count`, one entry per routine), the identifier count, and any
+`warnings`. On failure, tell me the error category
 and the README's remedy.

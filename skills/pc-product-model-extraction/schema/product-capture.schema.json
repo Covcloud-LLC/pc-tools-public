@@ -1,0 +1,2147 @@
+{
+  "type": "object",
+  "properties": {
+    "formatVersion": {
+      "const": "pc-tools.product-capture/1.0.0"
+    },
+    "state": {
+      "enum": [
+        "ready",
+        "partialScope",
+        "blocked"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "configurationRoot": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Git commit SHA of the source checkout; null when the source root is not the top level of a Git checkout.",
+          "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$"
+        },
+        "dirty": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Uncommitted or untracked changes under the files the extractor reads (<configurationRoot>/config and project-version.properties); null when revision is null."
+        },
+        "release": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "generationMode": {
+          "enum": [
+            "classic",
+            "apdGenerated",
+            "visualizedOnly"
+          ]
+        }
+      },
+      "required": [
+        "configurationRoot",
+        "revision",
+        "dirty",
+        "release",
+        "generationMode"
+      ],
+      "additionalProperties": false
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "product": {
+          "type": "string",
+          "minLength": 1
+        },
+        "line": {
+          "type": "string",
+          "minLength": 1
+        },
+        "availableProductLines": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "clauseKinds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "coverageTiers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "entityClosure": {
+          "enum": [
+            "composition",
+            "seed"
+          ]
+        },
+        "exclusions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "product",
+        "line",
+        "availableProductLines",
+        "clauseKinds",
+        "coverageTiers",
+        "entityClosure",
+        "exclusions"
+      ],
+      "additionalProperties": false
+    },
+    "product": {
+      "type": "object",
+      "properties": {
+        "declaration": {
+          "$ref": "#/$defs/node"
+        },
+        "offerings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        },
+        "displayProperties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "sourceRefs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/sourceRef"
+                },
+                "minItems": 1
+              }
+            },
+            "required": [
+              "name",
+              "value",
+              "sourceRefs"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "declaration",
+        "offerings",
+        "displayProperties"
+      ],
+      "additionalProperties": false
+    },
+    "policyLinePattern": {
+      "type": "object",
+      "properties": {
+        "declaration": {
+          "$ref": "#/$defs/node"
+        },
+        "clauses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        },
+        "properties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "sourceRefs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/sourceRef"
+                },
+                "minItems": 1
+              }
+            },
+            "required": [
+              "name",
+              "value",
+              "sourceRefs"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "displayProperties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "sourceRefs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/sourceRef"
+                },
+                "minItems": 1
+              }
+            },
+            "required": [
+              "name",
+              "value",
+              "sourceRefs"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "modifierBounds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        }
+      },
+      "required": [
+        "declaration",
+        "clauses",
+        "properties",
+        "displayProperties",
+        "modifierBounds"
+      ],
+      "additionalProperties": false
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "declarations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/node"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "name",
+          "declarations"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "typeLists": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "declarations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/node"
+            }
+          },
+          "entityTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/node"
+            },
+            "minItems": 1
+          }
+        },
+        "required": [
+          "name",
+          "declarations"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "costCodes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/node"
+      }
+    },
+    "costModel": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "lineArrays": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "declaringEntity": {
+                "type": "string",
+                "minLength": 1
+              },
+              "field": {
+                "type": "string",
+                "minLength": 1
+              },
+              "targetEntity": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "declaringEntity",
+              "field",
+              "targetEntity"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "costEntities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "transactionArrays": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "declaringEntity": {
+                "type": "string",
+                "minLength": 1
+              },
+              "field": {
+                "type": "string",
+                "minLength": 1
+              },
+              "targetEntity": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "declaringEntity",
+              "field",
+              "targetEntity"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "policyPeriodArrays": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        }
+      },
+      "required": [
+        "lineArrays",
+        "costEntities",
+        "transactionArrays",
+        "policyPeriodArrays"
+      ],
+      "additionalProperties": false
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "captured": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "inspection": {
+            "const": "inspected"
+          }
+        },
+        "required": [
+          "captured",
+          "inspection"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/diagnostic"
+      }
+    }
+  },
+  "required": [
+    "formatVersion",
+    "state",
+    "source",
+    "scope",
+    "product",
+    "policyLinePattern",
+    "entities",
+    "typeLists",
+    "costCodes",
+    "costModel",
+    "summary",
+    "diagnostics"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:pc-tools:schema:product-capture:1.0.0",
+  "title": "Native PC product capture",
+  "$defs": {
+    "node": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceRef"
+          },
+          "minItems": 1
+        },
+        "text": {
+          "type": "string"
+        },
+        "tier": {
+          "enum": [
+            "mandatory",
+            "electable",
+            "scripted"
+          ]
+        },
+        "excludedChildren": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "referenceStatus": {
+          "enum": [
+            "captured",
+            "external",
+            "narrowed"
+          ]
+        },
+        "referenceReason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resolution": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "target": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "publicId",
+                  "verifiedCaseInsensitive",
+                  "narrowed"
+                ]
+              },
+              "sourceRefs": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/sourceRef"
+                }
+              }
+            },
+            "required": [
+              "target",
+              "status",
+              "sourceRefs"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "attributes",
+        "children",
+        "sourceRefs"
+      ],
+      "additionalProperties": false
+    },
+    "sourceRef": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "symbol": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "path",
+        "symbol"
+      ],
+      "additionalProperties": false
+    },
+    "diagnostic": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "severity": {
+          "enum": [
+            "error",
+            "warning",
+            "info"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pointer": {
+          "type": "string"
+        },
+        "sourceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceRef"
+          }
+        }
+      },
+      "required": [
+        "code",
+        "severity",
+        "message",
+        "pointer"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "description": "Native ordered declarations. attributes/text are XML lexical strings; missing attributes are absent. No semantic roles or evaluated scripts. The bundled authoritative validator also checks native joins and readiness.",
+  "x-nativeDeclarations": {
+    "product": {
+      "AvailableCoverageCurrencies": {
+        "attributes": [],
+        "children": [
+          "AvailableCoverageCurrency"
+        ]
+      },
+      "AvailableCoverageCurrency": {
+        "attributes": [
+          "codeIdentifier",
+          "currency",
+          "public-id"
+        ],
+        "children": []
+      },
+      "AvailablePolicyTerm": {
+        "attributes": [
+          "codeIdentifier",
+          "public-id",
+          "termType"
+        ],
+        "children": []
+      },
+      "AvailablePolicyTerms": {
+        "attributes": [],
+        "children": [
+          "AvailablePolicyTerm"
+        ]
+      },
+      "ClauseSchedulePattern": {
+        "attributes": [
+          "codeIdentifier",
+          "mostDescriptiveProperty",
+          "priority",
+          "public-id",
+          "required",
+          "scheduledItemType"
+        ],
+        "children": [
+          "ScheduledItemClauseLinkages",
+          "ScheduledItemProperties"
+        ]
+      },
+      "ConditionPattern": {
+        "attributes": [
+          "codeIdentifier",
+          "conditionSubtype",
+          "coverageCategory",
+          "existence",
+          "lookupTableName",
+          "owningEntityType",
+          "policyLinePattern",
+          "priority",
+          "public-id",
+          "referenceDateByType"
+        ],
+        "children": [
+          "CovTerms",
+          "Schedules"
+        ]
+      },
+      "ConditionSelections": {
+        "attributes": [],
+        "children": [
+          "ConditionSelection"
+        ]
+      },
+      "CovTermDefault": {
+        "attributes": [
+          "codeIdentifier",
+          "currency",
+          "defaultValue",
+          "public-id"
+        ],
+        "children": []
+      },
+      "CovTermLimits": {
+        "attributes": [
+          "codeIdentifier",
+          "currency",
+          "defaultValue",
+          "maxVal",
+          "minVal",
+          "public-id"
+        ],
+        "children": []
+      },
+      "CovTermOpt": {
+        "attributes": [
+          "codeIdentifier",
+          "currency",
+          "optionCode",
+          "priority",
+          "public-id",
+          "value"
+        ],
+        "children": []
+      },
+      "CovTermOptSelection": {
+        "attributes": [
+          "codeIdentifier",
+          "covTermOptCode",
+          "enabled",
+          "public-id"
+        ],
+        "children": []
+      },
+      "CovTermOptSelections": {
+        "attributes": [],
+        "children": [
+          "CovTermOptSelection"
+        ]
+      },
+      "CovTermPack": {
+        "attributes": [
+          "codeIdentifier",
+          "currency",
+          "packageCode",
+          "priority",
+          "public-id"
+        ],
+        "children": [
+          "PackageTerms"
+        ]
+      },
+      "CovTermPackSelection": {
+        "attributes": [
+          "codeIdentifier",
+          "covTermPackCode",
+          "enabled",
+          "public-id"
+        ],
+        "children": []
+      },
+      "CovTermPackSelections": {
+        "attributes": [],
+        "children": [
+          "CovTermPackSelection"
+        ]
+      },
+      "CovTermSelections": {
+        "attributes": [],
+        "children": [
+          "DirectCovTermSelection",
+          "GenericCovTermSelection",
+          "OptionCovTermSelection",
+          "PackageCovTermSelection",
+          "TypekeyCovTermSelection"
+        ]
+      },
+      "CovTerms": {
+        "attributes": [],
+        "children": [
+          "DirectCovTermPattern",
+          "GenericCovTermPattern",
+          "OptionCovTermPattern",
+          "PackageCovTermPattern",
+          "TypekeyCovTermPattern"
+        ]
+      },
+      "CoverageCategories": {
+        "attributes": [],
+        "children": [
+          "CoverageCategory"
+        ]
+      },
+      "CoverageCategory": {
+        "attributes": [
+          "codeIdentifier",
+          "priority",
+          "public-id",
+          "refCode"
+        ],
+        "children": []
+      },
+      "CoveragePattern": {
+        "attributes": [
+          "blanketGroupType",
+          "codeIdentifier",
+          "coverageCategory",
+          "coverageSubtype",
+          "coverageSymbolGroupPattern",
+          "coveredPartyType",
+          "existence",
+          "lookupTableName",
+          "owningEntityType",
+          "policyLinePattern",
+          "priority",
+          "public-id",
+          "rICoverageGroupType",
+          "refCode",
+          "referenceDateByType"
+        ],
+        "children": [
+          "CovTerms",
+          "Schedules"
+        ]
+      },
+      "CoverageSelection": {
+        "attributes": [
+          "codeIdentifier",
+          "coverageCode",
+          "enabled",
+          "existence",
+          "public-id"
+        ],
+        "children": [
+          "CovTermSelections"
+        ]
+      },
+      "CoverageSelections": {
+        "attributes": [],
+        "children": [
+          "CoverageSelection"
+        ]
+      },
+      "CoverageSymbolGroupPattern": {
+        "attributes": [
+          "codeIdentifier",
+          "priority",
+          "public-id"
+        ],
+        "children": [
+          "CoverageSymbolPatterns"
+        ]
+      },
+      "CoverageSymbolGroupPatterns": {
+        "attributes": [],
+        "children": [
+          "CoverageSymbolGroupPattern"
+        ]
+      },
+      "CoverageSymbolPattern": {
+        "attributes": [
+          "codeIdentifier",
+          "coverageSymbolType",
+          "public-id"
+        ],
+        "children": []
+      },
+      "CoverageSymbolPatterns": {
+        "attributes": [],
+        "children": [
+          "CoverageSymbolPattern"
+        ]
+      },
+      "DefaultsSet": {
+        "attributes": [],
+        "children": [
+          "CovTermDefault"
+        ]
+      },
+      "DirectCovTermPattern": {
+        "attributes": [
+          "aggregationModel",
+          "codeIdentifier",
+          "coverageColumn",
+          "lookupTableName",
+          "modelType",
+          "priority",
+          "public-id",
+          "required",
+          "restrictionModel",
+          "valueType"
+        ],
+        "children": [
+          "LimitsSet"
+        ]
+      },
+      "DirectCovTermSelection": {
+        "attributes": [
+          "codeIdentifier",
+          "covTermCode",
+          "defaultValue",
+          "enabled",
+          "maxVal",
+          "minVal",
+          "public-id"
+        ],
+        "children": []
+      },
+      "DocTemplateRef": {
+        "attributes": [
+          "codeIdentifier",
+          "documentTemplateType",
+          "public-id",
+          "templateFile"
+        ],
+        "children": []
+      },
+      "DocTemplateRefs": {
+        "attributes": [],
+        "children": [
+          "DocTemplateRef"
+        ]
+      },
+      "ExclusionPattern": {
+        "attributes": [
+          "codeIdentifier",
+          "coverageCategory",
+          "exclusionSubtype",
+          "existence",
+          "lookupTableName",
+          "owningEntityType",
+          "policyLinePattern",
+          "priority",
+          "public-id",
+          "referenceDateByType"
+        ],
+        "children": [
+          "CovTerms",
+          "Schedules"
+        ]
+      },
+      "ExclusionSelections": {
+        "attributes": [],
+        "children": [
+          "ExclusionSelection"
+        ]
+      },
+      "Filters": {
+        "attributes": [],
+        "children": []
+      },
+      "GenericCovTermPattern": {
+        "attributes": [
+          "codeIdentifier",
+          "coverageColumn",
+          "defaultValue",
+          "lookupTableName",
+          "modelType",
+          "priority",
+          "public-id",
+          "required"
+        ],
+        "children": []
+      },
+      "GenericCovTermSelection": {
+        "attributes": [
+          "codeIdentifier",
+          "covTermCode",
+          "defaultValue",
+          "enabled",
+          "public-id"
+        ],
+        "children": []
+      },
+      "LimitsSet": {
+        "attributes": [],
+        "children": [
+          "CovTermLimits"
+        ]
+      },
+      "LineModifierSelection": {
+        "attributes": [
+          "codeIdentifier",
+          "enabled",
+          "modifierCode",
+          "public-id"
+        ],
+        "children": []
+      },
+      "ModifierPattern": {
+        "attributes": [
+          "codeIdentifier",
+          "defaultMaximum",
+          "defaultMinimum",
+          "displayEligibility",
+          "displayJustification",
+          "displayRange",
+          "displayValueFinal",
+          "lookupTableName",
+          "modifierDataType",
+          "modifierSubtype",
+          "priority",
+          "public-id",
+          "refCode",
+          "referenceDateByType",
+          "renderRateAsMultiplier",
+          "scheduleRate",
+          "splitOnAnniversary",
+          "typeList"
+        ],
+        "children": [
+          "RateFactorPatterns"
+        ]
+      },
+      "ModifierPatterns": {
+        "attributes": [],
+        "children": [
+          "ModifierPattern"
+        ]
+      },
+      "ModifierSelections": {
+        "attributes": [],
+        "children": [
+          "LineModifierSelection"
+        ]
+      },
+      "Offering": {
+        "attributes": [
+          "codeIdentifier",
+          "priority",
+          "product",
+          "public-id"
+        ],
+        "children": [
+          "Filters",
+          "PolicyLineSelections",
+          "PolicyTermSelections",
+          "ProductModifierSelections",
+          "QuestionSetSelections"
+        ]
+      },
+      "OfficialIdPattern": {
+        "attributes": [
+          "applicableStates",
+          "codeIdentifier",
+          "interstate",
+          "officialIDType",
+          "public-id",
+          "scope"
+        ],
+        "children": []
+      },
+      "OfficialIdPatterns": {
+        "attributes": [],
+        "children": [
+          "OfficialIdPattern"
+        ]
+      },
+      "OptionCovTermPattern": {
+        "attributes": [
+          "aggregationModel",
+          "choiceLookupTableName",
+          "codeIdentifier",
+          "coverageColumn",
+          "lookupTableName",
+          "modelType",
+          "priority",
+          "public-id",
+          "required",
+          "restrictionModel",
+          "valueType"
+        ],
+        "children": [
+          "DefaultsSet",
+          "Options"
+        ]
+      },
+      "OptionCovTermSelection": {
+        "attributes": [
+          "codeIdentifier",
+          "covTermCode",
+          "defaultValue",
+          "enabled",
+          "public-id"
+        ],
+        "children": [
+          "CovTermOptSelections"
+        ]
+      },
+      "Options": {
+        "attributes": [],
+        "children": [
+          "CovTermOpt"
+        ]
+      },
+      "PackageCovTermPattern": {
+        "attributes": [
+          "choiceLookupTableName",
+          "codeIdentifier",
+          "coverageColumn",
+          "lookupTableName",
+          "modelType",
+          "priority",
+          "public-id",
+          "required"
+        ],
+        "children": [
+          "DefaultsSet",
+          "Packages"
+        ]
+      },
+      "PackageCovTermSelection": {
+        "attributes": [
+          "codeIdentifier",
+          "covTermCode",
+          "defaultValue",
+          "enabled",
+          "public-id"
+        ],
+        "children": [
+          "CovTermPackSelections"
+        ]
+      },
+      "PackageTerm": {
+        "attributes": [
+          "aggregationModel",
+          "codeIdentifier",
+          "public-id",
+          "restrictionModel",
+          "value",
+          "valueType"
+        ],
+        "children": []
+      },
+      "PackageTerms": {
+        "attributes": [],
+        "children": [
+          "PackageTerm"
+        ]
+      },
+      "Packages": {
+        "attributes": [],
+        "children": [
+          "CovTermPack"
+        ]
+      },
+      "PolicyLinePattern": {
+        "attributes": [
+          "codeIdentifier",
+          "policyLineSubtype",
+          "priority",
+          "public-id",
+          "territoryCodeNeeded",
+          "apdManaged"
+        ],
+        "children": [
+          "AvailableCoverageCurrencies",
+          "CoverageCategories",
+          "CoverageSymbolGroupPatterns",
+          "ModifierPatterns",
+          "OfficialIdPatterns",
+          "AvailableSettlementCurrencies"
+        ]
+      },
+      "PolicyLineSelection": {
+        "attributes": [
+          "codeIdentifier",
+          "enabled",
+          "policyLineCode",
+          "public-id"
+        ],
+        "children": [
+          "ConditionSelections",
+          "CoverageSelections",
+          "ExclusionSelections",
+          "ModifierSelections"
+        ]
+      },
+      "PolicyLineSelections": {
+        "attributes": [],
+        "children": [
+          "PolicyLineSelection"
+        ]
+      },
+      "PolicyTermSelection": {
+        "attributes": [
+          "codeIdentifier",
+          "enabled",
+          "public-id",
+          "termType"
+        ],
+        "children": []
+      },
+      "PolicyTermSelections": {
+        "attributes": [],
+        "children": [
+          "PolicyTermSelection"
+        ]
+      },
+      "Product": {
+        "attributes": [
+          "abbreviation",
+          "codeIdentifier",
+          "daysUntilQuoteNeeded",
+          "defaultTermType",
+          "offeringRequired",
+          "priority",
+          "productAccountType",
+          "productType",
+          "public-id",
+          "quoteRoundingLevel",
+          "quoteRoundingMode",
+          "apdManaged"
+        ],
+        "children": [
+          "AvailablePolicyTerms",
+          "DocTemplateRefs",
+          "ProductModifierPatterns",
+          "ProductPolicyLinePatterns",
+          "ProductQuestionSetPatterns"
+        ]
+      },
+      "ProductModifierPattern": {
+        "attributes": [
+          "codeIdentifier",
+          "defaultMaximum",
+          "defaultMinimum",
+          "displayJustification",
+          "displayRange",
+          "displayValueFinal",
+          "lookupTableName",
+          "modifierDataType",
+          "modifierSubtype",
+          "priority",
+          "public-id",
+          "scheduleRate"
+        ],
+        "children": [
+          "ProductRateFactorPatterns"
+        ]
+      },
+      "ProductModifierPatterns": {
+        "attributes": [],
+        "children": [
+          "ProductModifierPattern"
+        ]
+      },
+      "ProductModifierSelections": {
+        "attributes": [],
+        "children": [
+          "ProductModifierSelection"
+        ]
+      },
+      "ProductPolicyLinePattern": {
+        "attributes": [
+          "codeIdentifier",
+          "policyLinePattern",
+          "public-id"
+        ],
+        "children": []
+      },
+      "ProductPolicyLinePatterns": {
+        "attributes": [],
+        "children": [
+          "ProductPolicyLinePattern"
+        ]
+      },
+      "ProductQuestionSetPattern": {
+        "attributes": [
+          "codeIdentifier",
+          "public-id",
+          "questionSet"
+        ],
+        "children": []
+      },
+      "ProductQuestionSetPatterns": {
+        "attributes": [],
+        "children": [
+          "ProductQuestionSetPattern"
+        ]
+      },
+      "ProductRateFactorPattern": {
+        "attributes": [
+          "codeIdentifier",
+          "defaultMaximum",
+          "defaultMinimum",
+          "lookupTableName",
+          "priority",
+          "public-id",
+          "rateFactorType"
+        ],
+        "children": []
+      },
+      "ProductRateFactorPatterns": {
+        "attributes": [],
+        "children": [
+          "ProductRateFactorPattern"
+        ]
+      },
+      "QuestionSetSelection": {
+        "attributes": [
+          "codeIdentifier",
+          "enabled",
+          "public-id",
+          "questionSetCode"
+        ],
+        "children": []
+      },
+      "QuestionSetSelections": {
+        "attributes": [],
+        "children": [
+          "QuestionSetSelection"
+        ]
+      },
+      "RateFactorPattern": {
+        "attributes": [
+          "codeIdentifier",
+          "defaultMaximum",
+          "defaultMinimum",
+          "lookupTableName",
+          "priority",
+          "public-id",
+          "rateFactorType",
+          "refCode"
+        ],
+        "children": []
+      },
+      "RateFactorPatterns": {
+        "attributes": [],
+        "children": [
+          "RateFactorPattern"
+        ]
+      },
+      "ScheduledItemClauseLink": {
+        "attributes": [
+          "codeIdentifier",
+          "linkedClausePattern",
+          "public-id"
+        ],
+        "children": []
+      },
+      "ScheduledItemClauseLinkages": {
+        "attributes": [],
+        "children": [
+          "ScheduledItemClauseLink"
+        ]
+      },
+      "ScheduledItemProperties": {
+        "attributes": [],
+        "children": [
+          "ScheduledItemPropertyPattern"
+        ]
+      },
+      "ScheduledItemPropertyPattern": {
+        "attributes": [
+          "codeIdentifier",
+          "column",
+          "priority",
+          "propertyName",
+          "public-id",
+          "required"
+        ],
+        "children": []
+      },
+      "Schedules": {
+        "attributes": [],
+        "children": [
+          "ClauseSchedulePattern"
+        ]
+      },
+      "TypekeyCovTermPattern": {
+        "attributes": [
+          "codeIdentifier",
+          "coverageColumn",
+          "defaultValue",
+          "lookupTableName",
+          "modelType",
+          "priority",
+          "public-id",
+          "required",
+          "typefilter",
+          "typelist"
+        ],
+        "children": []
+      },
+      "TypekeyCovTermSelection": {
+        "attributes": [
+          "codeIdentifier",
+          "covTermCode",
+          "enabled",
+          "public-id"
+        ],
+        "children": []
+      },
+      "ConditionSelection": {
+        "attributes": [
+          "codeIdentifier",
+          "conditionCode",
+          "enabled",
+          "existence",
+          "public-id"
+        ],
+        "children": [
+          "CovTermSelections"
+        ]
+      },
+      "ExclusionSelection": {
+        "attributes": [
+          "codeIdentifier",
+          "exclusionCode",
+          "enabled",
+          "existence",
+          "public-id"
+        ],
+        "children": [
+          "CovTermSelections"
+        ]
+      },
+      "ProductModifierSelection": {
+        "attributes": [
+          "codeIdentifier",
+          "modifierCode",
+          "enabled",
+          "public-id"
+        ],
+        "children": []
+      },
+      "AvailableSettlementCurrencies": {
+        "attributes": [],
+        "children": [
+          "AvailableSettlementCurrency"
+        ]
+      },
+      "AvailableSettlementCurrency": {
+        "attributes": [
+          "codeIdentifier",
+          "currency",
+          "public-id"
+        ],
+        "children": []
+      }
+    },
+    "entity": {
+      "array": {
+        "attributes": [
+          "arrayentity",
+          "arrayfield",
+          "cascadeDelete",
+          "deprecated",
+          "desc",
+          "exportable",
+          "getterScriptability",
+          "ignoreforevents",
+          "name",
+          "owner",
+          "setterScriptability",
+          "triggersValidation"
+        ],
+        "children": [
+          "array-association",
+          "link-association"
+        ]
+      },
+      "array-association": {
+        "attributes": [],
+        "children": [
+          "typelist-map"
+        ]
+      },
+      "checkconstraint": {
+        "attributes": [
+          "desc",
+          "predicate"
+        ],
+        "children": []
+      },
+      "column": {
+        "attributes": [
+          "autoincrement",
+          "columnName",
+          "createhistogram",
+          "default",
+          "deprecated",
+          "desc",
+          "exportable",
+          "getterScriptability",
+          "ignoreforevents",
+          "loadable",
+          "name",
+          "nullok",
+          "required",
+          "scalable",
+          "setterScriptability",
+          "soapnullok",
+          "supportsLinguisticSearch",
+          "type"
+        ],
+        "children": [
+          "columnParam",
+          "localization",
+          "tag"
+        ]
+      },
+      "column-override": {
+        "attributes": [
+          "default",
+          "desc",
+          "name",
+          "nullok",
+          "supportsLinguisticSearch",
+          "type"
+        ],
+        "children": [
+          "columnParam",
+          "tag"
+        ]
+      },
+      "columnParam": {
+        "attributes": [
+          "name",
+          "value"
+        ],
+        "children": []
+      },
+      "customconsistencycheck": {
+        "attributes": [
+          "className",
+          "desc",
+          "staticMethodName"
+        ],
+        "children": []
+      },
+      "datetimeordering": {
+        "attributes": [
+          "firstcolumnname",
+          "operator",
+          "secondcolumnname"
+        ],
+        "children": []
+      },
+      "dbcheckbuilder": {
+        "attributes": [
+          "className"
+        ],
+        "children": []
+      },
+      "delegate": {
+        "attributes": [
+          "extendable",
+          "name",
+          "platform",
+          "requiresType",
+          "setterScriptability"
+        ],
+        "children": [
+          "column",
+          "datetimeordering",
+          "foreignkey",
+          "fulldescription",
+          "implementsEntity",
+          "implementsInterface",
+          "index",
+          "monetaryamount",
+          "typekey"
+        ]
+      },
+      "description": {
+        "attributes": [],
+        "children": []
+      },
+      "edgeForeignKey": {
+        "attributes": [
+          "desc",
+          "edgeTableEntityName",
+          "edgeTableName",
+          "exportable",
+          "exportasid",
+          "extractable",
+          "fkentity",
+          "loadable",
+          "name",
+          "nullok",
+          "setterScriptability",
+          "soapnullok"
+        ],
+        "children": []
+      },
+      "edgeForeignKey-override": {
+        "attributes": [
+          "extractable",
+          "name"
+        ],
+        "children": []
+      },
+      "entity": {
+        "attributes": [
+          "abstract",
+          "admin",
+          "autoSplit",
+          "cacheable",
+          "consistentchildren",
+          "desc",
+          "displayName",
+          "edgeTable",
+          "effDatedBranchType",
+          "effDatedBranchesField",
+          "effDatedContainerField",
+          "effDatedRegistryTableName",
+          "entity",
+          "exportable",
+          "extendable",
+          "final",
+          "ignoreForEvents",
+          "instrumentationtable",
+          "loadable",
+          "lockable",
+          "platform",
+          "readOnly",
+          "setterScriptability",
+          "table",
+          "temporary",
+          "type"
+        ],
+        "children": [
+          "array",
+          "checkconstraint",
+          "column",
+          "customconsistencycheck",
+          "datetimeordering",
+          "dbcheckbuilder",
+          "edgeForeignKey",
+          "events",
+          "foreignkey",
+          "fulldescription",
+          "implementsEntity",
+          "implementsInterface",
+          "index",
+          "monetaryamount",
+          "onetoone",
+          "typekey"
+        ]
+      },
+      "event": {
+        "attributes": [
+          "description",
+          "name"
+        ],
+        "children": []
+      },
+      "events": {
+        "attributes": [],
+        "children": [
+          "event"
+        ]
+      },
+      "extension": {
+        "attributes": [
+          "entityName"
+        ],
+        "children": [
+          "array",
+          "column",
+          "column-override",
+          "foreignkey",
+          "foreignkey-override",
+          "implementsEntity",
+          "implementsInterface",
+          "index",
+          "monetaryamount",
+          "remove-index",
+          "typekey",
+          "typekey-override"
+        ]
+      },
+      "foreignkey": {
+        "attributes": [
+          "archivingOwner",
+          "columnName",
+          "createConstraint",
+          "createbackingindex",
+          "deprecated",
+          "desc",
+          "exportable",
+          "exportasid",
+          "fkentity",
+          "getterScriptability",
+          "ignoreforevents",
+          "importableagainstexistingobject",
+          "includeIdInIndex",
+          "loadable",
+          "name",
+          "nonEffDated",
+          "nullok",
+          "setterScriptability",
+          "soapnullok",
+          "triggersValidation"
+        ],
+        "children": [
+          "tag"
+        ]
+      },
+      "foreignkey-override": {
+        "attributes": [
+          "desc",
+          "importableagainstexistingobject",
+          "name",
+          "nullok",
+          "triggersValidation"
+        ],
+        "children": [
+          "tag"
+        ]
+      },
+      "fulldescription": {
+        "attributes": [],
+        "children": []
+      },
+      "implementsEntity": {
+        "attributes": [
+          "name"
+        ],
+        "children": []
+      },
+      "implementsInterface": {
+        "attributes": [
+          "iface",
+          "impl"
+        ],
+        "children": []
+      },
+      "index": {
+        "attributes": [
+          "desc",
+          "expectedtobecovering",
+          "name",
+          "trackUsage",
+          "unique"
+        ],
+        "children": [
+          "indexcol"
+        ]
+      },
+      "indexcol": {
+        "attributes": [
+          "keyposition",
+          "name",
+          "sortascending"
+        ],
+        "children": []
+      },
+      "internalExtension": {
+        "attributes": [
+          "entityName"
+        ],
+        "children": [
+          "array",
+          "checkconstraint",
+          "column",
+          "column-override",
+          "customconsistencycheck",
+          "dbcheckbuilder",
+          "description",
+          "edgeForeignKey-override",
+          "events",
+          "foreignkey",
+          "foreignkey-override",
+          "implementsEntity",
+          "implementsInterface",
+          "index",
+          "jointableconsistencycheck",
+          "remove-index",
+          "searchColumn",
+          "searchTypekey",
+          "typekey"
+        ]
+      },
+      "jointableconsistencycheck": {
+        "attributes": [
+          "jointable"
+        ],
+        "children": [
+          "matchingcolumn"
+        ]
+      },
+      "keyfilter": {
+        "attributes": [
+          "name"
+        ],
+        "children": []
+      },
+      "keyfilters": {
+        "attributes": [],
+        "children": [
+          "keyfilter"
+        ]
+      },
+      "link-association": {
+        "attributes": [
+          "hasGetter",
+          "hasSetter"
+        ],
+        "children": [
+          "subtype-map"
+        ]
+      },
+      "localization": {
+        "attributes": [
+          "extractable",
+          "nullok",
+          "tableName",
+          "unique"
+        ],
+        "children": []
+      },
+      "matchingcolumn": {
+        "attributes": [
+          "joincolumn",
+          "name"
+        ],
+        "children": []
+      },
+      "monetaryamount": {
+        "attributes": [
+          "amountColumnName",
+          "amountRange",
+          "currencyColumnName",
+          "deprecated",
+          "desc",
+          "exportable",
+          "getterScriptability",
+          "name",
+          "nullok",
+          "scalable",
+          "scaleToCurrency"
+        ],
+        "children": []
+      },
+      "nonPersistentEntity": {
+        "attributes": [
+          "desc",
+          "entity",
+          "exportable",
+          "extendable",
+          "final",
+          "platform"
+        ],
+        "children": [
+          "array",
+          "column",
+          "foreignkey",
+          "fulldescription",
+          "implementsEntity",
+          "implementsInterface",
+          "monetaryamount",
+          "typekey"
+        ]
+      },
+      "onetoone": {
+        "attributes": [
+          "cascadeDelete",
+          "desc",
+          "exportable",
+          "fkentity",
+          "getterScriptability",
+          "ignoreforevents",
+          "linkField",
+          "name",
+          "nullok",
+          "owner",
+          "setterScriptability"
+        ],
+        "children": []
+      },
+      "remove-index": {
+        "attributes": [
+          "name"
+        ],
+        "children": []
+      },
+      "searchColumn": {
+        "attributes": [
+          "desc",
+          "name",
+          "sourceColumn",
+          "sourceForeignKey"
+        ],
+        "children": [
+          "tag"
+        ]
+      },
+      "searchTypekey": {
+        "attributes": [
+          "desc",
+          "name",
+          "sourceForeignKey",
+          "sourceTypekey"
+        ],
+        "children": [
+          "tag"
+        ]
+      },
+      "subtype": {
+        "attributes": [
+          "abstract",
+          "desc",
+          "displayName",
+          "entity",
+          "final",
+          "platform",
+          "priority",
+          "supertype"
+        ],
+        "children": [
+          "array",
+          "column",
+          "datetimeordering",
+          "dbcheckbuilder",
+          "events",
+          "foreignkey",
+          "fulldescription",
+          "implementsEntity",
+          "implementsInterface",
+          "index",
+          "monetaryamount",
+          "onetoone",
+          "typekey"
+        ]
+      },
+      "subtype-map": {
+        "attributes": [],
+        "children": []
+      },
+      "tag": {
+        "attributes": [
+          "name",
+          "value"
+        ],
+        "children": []
+      },
+      "typekey": {
+        "attributes": [
+          "allowInitialValueForUpgrade",
+          "columnName",
+          "createhistogram",
+          "default",
+          "deprecated",
+          "desc",
+          "exportable",
+          "getterScriptability",
+          "loadable",
+          "name",
+          "nullok",
+          "setterScriptability",
+          "soapnullok",
+          "typefilter",
+          "typelist"
+        ],
+        "children": [
+          "keyfilters",
+          "tag"
+        ]
+      },
+      "typekey-override": {
+        "attributes": [
+          "default",
+          "desc",
+          "name",
+          "nullok"
+        ],
+        "children": [
+          "tag"
+        ]
+      },
+      "typelist-map": {
+        "attributes": [
+          "field"
+        ],
+        "children": []
+      },
+      "viewEntity": {
+        "attributes": [
+          "desc",
+          "entity",
+          "exportable",
+          "extendable",
+          "platform",
+          "primaryEntity"
+        ],
+        "children": [
+          "implementsInterface",
+          "viewEntityColumn",
+          "viewEntityLink",
+          "viewEntityName",
+          "viewEntityTypekey"
+        ]
+      },
+      "viewEntityColumn": {
+        "attributes": [
+          "desc",
+          "exportable",
+          "getterScriptability",
+          "name",
+          "path",
+          "setterScriptability"
+        ],
+        "children": []
+      },
+      "viewEntityLink": {
+        "attributes": [
+          "name",
+          "path"
+        ],
+        "children": []
+      },
+      "viewEntityName": {
+        "attributes": [
+          "name",
+          "path"
+        ],
+        "children": []
+      },
+      "viewEntityTypekey": {
+        "attributes": [
+          "name",
+          "path",
+          "setterScriptability"
+        ],
+        "children": []
+      }
+    },
+    "typelist": {
+      "category": {
+        "attributes": [
+          "code",
+          "typelist"
+        ],
+        "children": []
+      },
+      "categorylist": {
+        "attributes": [
+          "typelist"
+        ],
+        "children": []
+      },
+      "exclude": {
+        "attributes": [
+          "code"
+        ],
+        "children": []
+      },
+      "include": {
+        "attributes": [
+          "code"
+        ],
+        "children": []
+      },
+      "internaltypelistextension": {
+        "attributes": [
+          "desc",
+          "name"
+        ],
+        "children": [
+          "typecode",
+          "typefilter"
+        ]
+      },
+      "typecode": {
+        "attributes": [
+          "code",
+          "desc",
+          "name",
+          "priority",
+          "retired"
+        ],
+        "children": [
+          "category",
+          "categorylist"
+        ]
+      },
+      "typefilter": {
+        "attributes": [
+          "desc",
+          "includeAll",
+          "name"
+        ],
+        "children": [
+          "category",
+          "exclude",
+          "include"
+        ]
+      },
+      "typelist": {
+        "attributes": [
+          "desc",
+          "final",
+          "name",
+          "platform",
+          "tableName"
+        ],
+        "children": [
+          "typecode",
+          "typefilter"
+        ]
+      },
+      "typelistextension": {
+        "attributes": [
+          "desc",
+          "name"
+        ],
+        "children": [
+          "typecode",
+          "typefilter"
+        ]
+      }
+    },
+    "cost": {
+      "ChargePatern": {
+        "attributes": [],
+        "children": []
+      },
+      "CostCode": {
+        "attributes": [
+          "public-id"
+        ],
+        "children": [
+          "ChargePatern",
+          "CostCode",
+          "CostName",
+          "Description",
+          "Overrideable",
+          "ProrationMethod",
+          "RateAmountType"
+        ]
+      },
+      "CostName": {
+        "attributes": [],
+        "children": []
+      },
+      "Description": {
+        "attributes": [],
+        "children": []
+      },
+      "Overrideable": {
+        "attributes": [],
+        "children": []
+      },
+      "ProrationMethod": {
+        "attributes": [],
+        "children": []
+      },
+      "RateAmountType": {
+        "attributes": [],
+        "children": []
+      },
+      "import": {
+        "attributes": [],
+        "children": [
+          "CostCode"
+        ]
+      }
+    },
+    "modifierBounds": {
+      "ModifierMinMaxLookup": {
+        "attributes": [
+          "codeIdentifier",
+          "public-id",
+          "modifierPatternCode"
+        ],
+        "children": [
+          "State",
+          "Minimum",
+          "Maximum"
+        ]
+      },
+      "State": {
+        "attributes": [],
+        "children": []
+      },
+      "Minimum": {
+        "attributes": [],
+        "children": []
+      },
+      "Maximum": {
+        "attributes": [],
+        "children": []
+      }
+    }
+  }
+}
