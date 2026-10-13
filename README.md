@@ -30,6 +30,15 @@ touch with its backing, every write with its actor and target, every entity-back
 including lookup arguments, each engine's routine parameter bindings, the unresolved calls,
 and headed manual sections for what no tool captures, to fill from the checkout.
 
+## Parallel rating framework
+
+The [parallel rating framework](frameworks/parallel-rating/README.md) supplies
+`ParallelRatingStep<C, I, R>` and `ParallelFinalStepsOrchestrator<C>` as source
+files for integration into your PC application. It prepares detached inputs
+serially, computes independent steps concurrently, and applies results serially
+in manually ordered stages. The orchestrator owns and cleans up its worker pool.
+Application-specific steps and target-runtime validation are supplied by the adopter.
+
 ## Worksheet pipeline
 
 The three skills form one pipeline for comparing two rating runs of the same job

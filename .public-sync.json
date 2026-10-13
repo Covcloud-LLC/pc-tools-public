@@ -1,7 +1,7 @@
 {
   "format": "pc-tools-public-sync",
   "version": 1,
-  "source": "3a9571a723d7ca3498c922c6fcec8a19f11900c5",
+  "source": "8297ed5a3de06bf6bc73de67d55a7cc43d3c331f",
   "files": {
     ".agents/skills/pc-product-model-extraction": "ec9f2feadc7050fcb2d2efe0d4a3af57b588a92c4c300878487c08d4eaa80418",
     ".agents/skills/pc-ratebook-extraction": "17ccfb880d191220169fa89f71832ac49f8f061c171a39b8b8dc13a6075afe2c",
@@ -22,7 +22,10 @@
     ".gitignore": "ecb674d76e8c4a2bd1ec3ad0d35dd5b0d2b08ff1a7d18445769ed3d4210558d1",
     "LICENSE": "649e0a2636047116edbaabfd12f458a725872a0dfa557ca24395f76513c2ee8c",
     "NOTICE": "c825e23d6c4f75d897d0a78d86818cd9894f4aca55ecb31113c89a7a38f2e8e4",
-    "README.md": "f88df1aacdfcdf9998232deb0b94ce1860062dbcfbac270634b2a70c267b27e2",
+    "README.md": "33e547f81315d4ed08757ab974b51ca42de53bda64c6582f2e70f689ea9e8373",
+    "frameworks/parallel-rating/README.md": "4ce5eb1b0773d068e0a54b14471bbbb75e4bb534c1283a68be31be56e0da8549",
+    "frameworks/parallel-rating/src/pctools/rating/parallel/ParallelFinalStepsOrchestrator.gs": "5b90e8735812d449889c5cf5f404124a6a182da0c8f2f616c2b983d87872fbf8",
+    "frameworks/parallel-rating/src/pctools/rating/parallel/ParallelRatingStep.gs": "790a10431a9a489ce61a2bee968182fcada627313c0eeb3b35de039d2e27c126",
     "install.sh": "0a332e31e9ab5a3756f717ef1daef46878951a61f20d7fa16d8d8b3508e96075",
     "skills/pc-product-model-extraction/PROMPT.md": "7f8b44d938b92c6e77bd1298b895e19db2e204ecd750c9f58c5eea3bf460e33e",
     "skills/pc-product-model-extraction/README.md": "a17df037dbfcd244786192291e4e0cbde55d05b34bf1019bf88889a014ad178e",
