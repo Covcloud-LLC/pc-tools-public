@@ -1,0 +1,4 @@
+interface:
+  display_name: "PC Rating Recovery"
+  short_description: "Inspect and reset stale non-production quoting jobs"
+  default_prompt: "Use $pc-rating-recovery to inspect a stuck non-production PC job without changing it."
