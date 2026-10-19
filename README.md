@@ -53,11 +53,21 @@ and quote branch:
 The database keeps only the latest rating data for a job, so save each run's XML
 before rerating if you want to compare it later.
 
+## Development quoting recovery
+
+[`pc-rating-recovery`](skills/pc-rating-recovery/README.md) inspects a stale Quoting
+period by exact job number and offers an explicit, guarded non-production reset.
+The Python command supports SQL Server. Complete standalone SQL Server and Oracle
+scripts are also included; Oracle is an unexecuted translation with schema, timestamp
+and concurrency assumptions, not verified runtime support. Inspection is the default.
+Keep the job idle, preserve pricing, and read the recovery guide before any apply.
+
 ## Requirements
 
-- Python 3.8 or later. Every script except worksheet extraction uses the
+- Python 3.8 or later. Every Python script except worksheet extraction and rating recovery uses the
   standard library only.
 - Worksheet extraction also needs `pymssql`; see its [README](skills/pc-worksheet-extraction/README.md).
+- Rating recovery also needs `pymssql`; see its [README](skills/pc-rating-recovery/README.md).
 
 ## Install
 
